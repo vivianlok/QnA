@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="14dp"
+    app:cardCornerRadius="9dp"
+    app:cardElevation="4dp">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/item_questionCV"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_margin="8dp"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="4dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="15dp">
+
+
+            <RelativeLayout
+                android:id="@+id/topRelativeLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right">
+
+
+                <TextView
+                    android:id="@+id/questionTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="12dp"
+                    android:fontFamily="@font/acme"
+                    android:gravity="center"
+                    android:text="Posting Questions in"
+                    android:textAlignment="center"
+                    android:textAllCaps="true"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="20sp" />
+
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/replyCardView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/questionTextView"
+                    android:layout_marginTop="17dp"
+                    app:cardBackgroundColor="@color/placeholder_bg"
+                    app:cardCornerRadius="4dp">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="8dp">
+
+                        <EditText
+                            android:id="@+id/questionET"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:layout_marginTop="20dp"
+                            android:background="@color/white"
+                            android:gravity="center"
+                            android:hint="Type question here" />
+
+                        <EditText
+                            android:id="@+id/descriptionET"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:layout_below="@id/questionET"
+                            android:layout_marginTop="54dp"
+                            android:background="@color/white"
+                            android:gravity="center"
+                            android:hint="Description Here" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="0dp"
+                            android:id="@+id/extraLayout"
+                            android:gravity="center"
+                            android:layout_below="@+id/descriptionET"
+                            android:orientation="horizontal">
+
+
+                        <Spinner
+                            android:id="@+id/selectCategory"
+                            android:layout_weight="1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:background="@android:drawable/btn_dropdown"
+                            android:spinnerMode="dropdown"/>
+
+                            <Button
+                                android:id="@+id/attachmentButton"
+                                android:layout_weight="1"
+                                android:layout_width="wrap_content"
+                                android:textSize="10dp"
+                                android:layout_height="40dp"
+                                android:layout_alignParentRight="true"
+                                android:layout_below="@+id/selectCategory"
+                                android:text="Add an Attachment" />
+
+                            </LinearLayout>
+
+                        <ImageView
+                            android:id="@+id/replyUserAvataImageView"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_below="@id/extraLayout"
+                            android:layout_marginTop="12dp"
+                            android:src="@drawable/icon_face" />
+
+                        <TextView
+                            android:id="@+id/replyUserNameTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/extraLayout"
+                            android:layout_marginLeft="7dp"
+                            android:layout_marginTop="15dp"
+                            android:layout_toRightOf="@id/replyUserAvataImageView"
+                            android:text="Vivian L"
+                            android:textColor="@color/black"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/userProfileLink"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/replyUserNameTextView"
+                            android:layout_marginLeft="7dp"
+                            android:layout_toRightOf="@id/replyUserAvataImageView"
+                            android:text="Click here for User Profile" />
+
+                        <androidx.cardview.widget.CardView
+                            android:id="@+id/guidelines"
+                            android:layout_width="500dp"
+                            android:layout_height="100dp"
+                            android:layout_below="@id/replyUserNameTextView"
+                            android:layout_marginTop="40dp"
+                            app:cardCornerRadius="4dp">
+
+                            <LinearLayout
+                                android:id="@+id/rulesLayout"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_margin="5dp"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@id/guidelines"
+                                    android:text="Do Not Abuse Community Guidelines" />
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="Keep your questions short and simple." />
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="Use complete words. Avoid slang and Abusive Language." />
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="Use the correct category." />
+                            </LinearLayout>
+
+                        </androidx.cardview.widget.CardView>
+
+
+                    </RelativeLayout>
+
+
+                </androidx.cardview.widget.CardView>
+
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/replyCardView"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/round_btn_white"
+                    android:gravity="center"
+                    android:padding="5dp"
+                    android:text="Ask Now"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="12sp" />
+
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</RelativeLayout>

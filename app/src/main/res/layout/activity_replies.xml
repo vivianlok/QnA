@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".RepliesActivity">
+
+    <!-- ****************Top View starts here ************* -->
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/topLinearLayout"
+    android:layout_marginTop="20dp"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/questionTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Any remedy for the Corona Virus?"
+        android:fontFamily="@font/acme"
+        android:textColor="@color/colorPrimary"
+        android:textSize="20dp" />
+<LinearLayout
+    android:layout_width="match_parent"
+    android:gravity="right"
+    android:layout_margin="40dp"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+<Button
+    android:layout_width="wrap_content"
+    android:paddingLeft="15dp"
+    android:paddingRight="15dp"
+    android:layout_height="30dp"
+    android:background="@drawable/round_btn_white"
+    android:textColor="@color/colorPrimary"
+    android:text="No attachments AVAILABLE"
+    android:textSize="10dp"
+    android:gravity="center"/>
+<com.google.android.material.floatingactionbutton.FloatingActionButton
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="30dp"
+    android:tint="@color/white"
+    android:src="@drawable/icon_share"/>
+</LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/icon_category"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:gravity="bottom"
+            android:text="Music"/>
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="10dp"
+            android:src="@drawable/icon_solved"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:gravity="bottom"
+            android:text="Solved"/>
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/icon_eye"
+            android:layout_marginLeft="10dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:gravity="bottom"
+            android:text="357"/>
+    </LinearLayout>
+</LinearLayout>
+    <!-- ****************Top View ends here ************* -->
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/repliesLayout"
+        android:layout_below="@+id/topLinearLayout"
+        android:layout_width="match_parent"
+        android:layout_above="@id/replyBottomLinearLayout"
+        android:layout_height="match_parent"
+        tools:listitem="@layout/item_replies"/>
+
+
+<!-- ****************Bottom View starts here ************* -->
+<LinearLayout
+    android:id="@+id/replyBottomLinearLayout"
+    android:background="@color/white"
+    android:layout_width="match_parent"
+    android:padding="8dp"
+    android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true"
+    android:orientation="horizontal">
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/icon_face"/>
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:hint="Write your reply here..."/>
+    <TextView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:gravity="center"
+        android:textSize="20dp"
+        android:fontFamily="@font/acme"
+        android:textColor="@color/colorPrimary"
+        android:text="Post"/>
+</LinearLayout>
+    <!-- ****************Bottom View ends here ************* -->
+</RelativeLayout>

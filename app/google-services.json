@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "525779641157",
+    "firebase_url": "https://qapp-e3463.firebaseio.com",
+    "project_id": "qapp-e3463",
+    "storage_bucket": "qapp-e3463.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:525779641157:android:e7ab4056e3b877b2fa942c",
+        "android_client_info": {
+          "package_name": "com.qna"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "525779641157-7q26999fj3jlkccqeofh25n684veqlrf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.qna",
+            "certificate_hash": "8f068b1f104726304a3455fa38819b846f48166a"
+          }
+        },
+        {
+          "client_id": "525779641157-68jsnb1k3ebmtq275ivle10afsm4ka2d.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBxhZDJhBAxMsQS0lw26bfAGHz9A6aJFSk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "525779641157-68jsnb1k3ebmtq275ivle10afsm4ka2d.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
