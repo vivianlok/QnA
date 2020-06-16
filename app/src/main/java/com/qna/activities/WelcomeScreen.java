@@ -7,10 +7,17 @@ import androidx.cardview.widget.CardView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.qna.PostQuestionActivity;
 import com.qna.R;
 
@@ -21,12 +28,14 @@ public class WelcomeScreen extends AppCompatActivity implements View.OnClickList
     private FirebaseUser currentUser;
     private FirebaseAuth mFirebaseAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
+    FirebaseDatabase firebaseDatabase;
+    DatabaseReference usersDetailsReference;
 
 
     // Declare CardViews
 
     CardView foodCV, entrepreneurshipCV,educationCV,fashionCV,fitnessCV,bookCV,artCV,petCV,musicCV,economicsCV,businessCV,travelCV,technologyCV,sportsCV,scienceCV;
-
+    TextView logoutTV;
     String userId;
     public static final int RC_SIGN_IN = 1;
     @Override
@@ -34,6 +43,9 @@ public class WelcomeScreen extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome_screen);
 
+
+        firebaseDatabase  = FirebaseDatabase.getInstance();
+        usersDetailsReference = firebaseDatabase.getReference().child("Users_Details");
         mFirebaseAuth = FirebaseAuth.getInstance();
         currentUser = mFirebaseAuth.getCurrentUser();
 
@@ -54,6 +66,7 @@ public class WelcomeScreen extends AppCompatActivity implements View.OnClickList
         technologyCV = findViewById(R.id.technologyCV);
         sportsCV = findViewById(R.id.sportsCV);
         scienceCV = findViewById(R.id.scienceCV);
+        logoutTV = findViewById(R.id.logoutTV);
 
         foodCV.setOnClickListener(this);
         entrepreneurshipCV.setOnClickListener(this);
@@ -70,6 +83,7 @@ public class WelcomeScreen extends AppCompatActivity implements View.OnClickList
         technologyCV.setOnClickListener(this);
         sportsCV.setOnClickListener(this);
         scienceCV.setOnClickListener(this);
+        logoutTV.setOnClickListener(this);
 
         mAuthStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -79,6 +93,8 @@ public class WelcomeScreen extends AppCompatActivity implements View.OnClickList
                 if (currentUser != null) {
                     /// onSignedInInitialize(user.getDisplayName());
                     userId = currentUser.getUid();
+                    //getUsersDetails(currentUser);
+                    checkForNewUsers(userId);
 
 
                 } else {
@@ -112,6 +128,26 @@ public class WelcomeScreen extends AppCompatActivity implements View.OnClickList
 
         };
 
+    }
+
+    private void checkForNewUsers(String userId) {
+
+        usersDetailsReference.child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                if (!dataSnapshot.exists()){
+
+                    Intent goToEditProfileActivity = new Intent(WelcomeScreen.this, EditProfileActivity.class);
+                    startActivity(goToEditProfileActivity);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     @Override
@@ -220,6 +256,10 @@ public class WelcomeScreen extends AppCompatActivity implements View.OnClickList
             startActivity(goToScienceCvIntent);
 
         } //End of else if
+        else if (v.getId() == R.id.logoutTV){
+            FirebaseAuth.getInstance().signOut();
+            Toast.makeText(this, "Successfully logged out", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override

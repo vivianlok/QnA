@@ -9,7 +9,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ProfileActivity"></activity>
+        <activity android:name=".activities.EditProfileActivity"></activity>
+        <activity android:name=".activities.SplashScreenActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".ProfileActivity" />
         <activity
             android:name=".PostQuestionActivity"
             android:label="Post a New Question"
@@ -64,13 +72,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.WelcomeScreen"
-            android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
 
         <meta-data
             android:name="preloaded_fonts"

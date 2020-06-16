@@ -31,7 +31,7 @@
                     android:layout_height="50dp"
                    android:layout_marginTop="12dp"
                     android:src="@drawable/icon_face"
-                    android:id="@+id/replyUserAvataImageView" />
+                    android:id="@+id/replyUserAvatarImageView" />
 
                 <TextView
                     android:layout_marginTop="15dp"
@@ -40,7 +40,7 @@
                     android:text="Vivian L"
                     android:textColor="@color/black"
                     android:textStyle="bold"
-                    android:layout_toRightOf="@id/replyUserAvataImageView"
+                    android:layout_toRightOf="@id/replyUserAvatarImageView"
                     android:layout_marginLeft="7dp"
                     android:id="@+id/replyUserNameTextView" />
                 <TextView
@@ -50,7 +50,7 @@
                     android:text="5 days ago"
                     android:textColor="@color/black"
                     android:textStyle="bold"
-                    android:layout_toRightOf="@id/replyUserAvataImageView"
+                    android:layout_toRightOf="@id/replyUserAvatarImageView"
                     android:layout_marginLeft="200dp" />
                 <TextView
                     android:layout_width="match_parent"
@@ -59,7 +59,7 @@
 "
                     android:text="This is a sample text which represents the last reply fromall users that responded to the question"
                     android:layout_below="@id/replyUserNameTextView"
-                    android:layout_toRightOf="@id/replyUserAvataImageView"
+                    android:layout_toRightOf="@id/replyUserAvatarImageView"
                     android:layout_marginLeft="7dp" />
 
             </RelativeLayout>
@@ -122,7 +122,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Share"/>
-
+            <ImageView
+                android:layout_marginLeft="10dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/icon_flag"/>
+            <TextView
+                android:layout_marginLeft="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Report"/>
         </LinearLayout>
 
         <LinearLayout
