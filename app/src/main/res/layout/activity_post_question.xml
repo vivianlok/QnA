@@ -58,57 +58,57 @@
                         android:layout_margin="8dp">
 
                         <EditText
-                            android:id="@+id/questionET"
+                            android:id="@+id/questionTitleET"
                             android:layout_width="match_parent"
                             android:layout_height="50dp"
                             android:layout_marginTop="20dp"
                             android:background="@color/white"
                             android:gravity="center"
-                            android:hint="Type question here" />
+                            android:hint="Question Title" />
 
                         <EditText
                             android:id="@+id/descriptionET"
                             android:layout_width="match_parent"
                             android:layout_height="50dp"
-                            android:layout_below="@id/questionET"
+                            android:layout_below="@id/questionTitleET"
                             android:layout_marginTop="54dp"
                             android:background="@color/white"
                             android:gravity="center"
-                            android:hint="Description Here" />
+                            android:hint="QuestionDescription Here" />
 
                         <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:padding="10dp"
                             android:id="@+id/extraLayout"
-                            android:gravity="center"
-                            android:layout_below="@+id/descriptionET"
-                            android:orientation="horizontal">
-
-
-                        <Spinner
-                            android:id="@+id/selectCategory"
-                            android:layout_weight="1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_alignParentLeft="true"
-                            android:background="@android:drawable/btn_dropdown"
-                            android:spinnerMode="dropdown"/>
+                            android:layout_below="@+id/descriptionET"
+                            android:gravity="center"
+                            android:orientation="horizontal"
+                            android:padding="10dp">
+
+
+                            <Spinner
+                                android:id="@+id/selectCategory"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentLeft="true"
+                                android:layout_weight="1"
+                                android:background="@android:drawable/btn_dropdown"
+                                android:spinnerMode="dropdown" />
 
                             <Button
                                 android:id="@+id/attachmentButton"
-                                android:layout_weight="1"
                                 android:layout_width="wrap_content"
-                                android:textSize="10dp"
                                 android:layout_height="50dp"
-                                android:layout_alignParentRight="true"
                                 android:layout_below="@+id/selectCategory"
-                                android:text="Add an Attachment" />
+                                android:layout_alignParentRight="true"
+                                android:layout_weight="1"
+                                android:text="Add an Attachment"
+                                android:textSize="10dp" />
 
-                            </LinearLayout>
+                        </LinearLayout>
 
                         <ImageView
-                            android:id="@+id/replyUserAvatarImageView"
+                            android:id="@+id/currentUserAvatarImageView"
                             android:layout_width="50dp"
                             android:layout_height="50dp"
                             android:layout_below="@id/extraLayout"
@@ -116,13 +116,13 @@
                             android:src="@drawable/icon_face" />
 
                         <TextView
-                            android:id="@+id/replyUserNameTextView"
+                            android:id="@+id/currentUserNameTextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@id/extraLayout"
                             android:layout_marginLeft="7dp"
                             android:layout_marginTop="15dp"
-                            android:layout_toRightOf="@id/replyUserAvatarImageView"
+                            android:layout_toRightOf="@id/currentUserAvatarImageView"
                             android:text="Vivian L"
                             android:textColor="@color/black"
                             android:textStyle="bold" />
@@ -131,16 +131,16 @@
                             android:id="@+id/userProfileLink"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_below="@id/replyUserNameTextView"
+                            android:layout_below="@id/currentUserNameTextView"
                             android:layout_marginLeft="7dp"
-                            android:layout_toRightOf="@id/replyUserAvatarImageView"
+                            android:layout_toRightOf="@id/currentUserAvatarImageView"
                             android:text="Click here for User Profile" />
 
                         <androidx.cardview.widget.CardView
                             android:id="@+id/guidelines"
                             android:layout_width="500dp"
                             android:layout_height="100dp"
-                            android:layout_below="@id/replyUserNameTextView"
+                            android:layout_below="@id/currentUserNameTextView"
                             android:layout_marginTop="40dp"
                             app:cardCornerRadius="4dp">
 

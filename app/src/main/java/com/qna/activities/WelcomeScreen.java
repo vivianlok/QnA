@@ -18,8 +18,23 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.qna.PostQuestionActivity;
 import com.qna.R;
+import com.qna.activities.categories.ArtActivity;
+import com.qna.activities.categories.BookActivity;
+import com.qna.activities.categories.BusinessActivity;
+import com.qna.activities.categories.EconomicsActivity;
+import com.qna.activities.categories.EditProfileActivity;
+import com.qna.activities.categories.EducationActivity;
+import com.qna.activities.categories.EntrepreneurshipActivity;
+import com.qna.activities.categories.FashionActivity;
+import com.qna.activities.categories.FitnessActivity;
+import com.qna.activities.categories.FoodActivity;
+import com.qna.activities.categories.MusicActivity;
+import com.qna.activities.categories.PetActivity;
+import com.qna.activities.categories.ScienceActivity;
+import com.qna.activities.categories.SportsActivity;
+import com.qna.activities.categories.TechnologyActivity;
+import com.qna.activities.categories.TravelActivity;
 
 import java.util.Arrays;
 

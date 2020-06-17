@@ -8,7 +8,7 @@
     app:cardCornerRadius="9dp"
     app:cardElevation="4dp"
     android:background="@drawable/qnabg"
-    tools:context=".activities.EditProfileActivity">
+    tools:context=".activities.categories.EditProfileActivity">
     <androidx.cardview.widget.CardView
         android:id="@+id/pictureCV"
         android:layout_width="match_parent"

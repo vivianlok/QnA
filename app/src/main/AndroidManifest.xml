@@ -9,7 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activities.EditProfileActivity"></activity>
+        <activity android:name=".activities.categories.EditProfileActivity"></activity>
         <activity android:name=".activities.SplashScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -17,58 +17,58 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ProfileActivity" />
+        <activity android:name=".activities.ProfileActivity" />
         <activity
-            android:name=".PostQuestionActivity"
+            android:name=".activities.PostQuestionActivity"
             android:label="Post a New Question"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".RepliesActivity"
+            android:name=".activities.RepliesActivity"
             android:label="Replies" />
         <activity
-            android:name=".activities.FoodActivity"
+            android:name=".activities.categories.FoodActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activities.ArtActivity"
+            android:name=".activities.categories.ArtActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activities.BookActivity"
+            android:name=".activities.categories.BookActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activities.BusinessActivity"
+            android:name=".activities.categories.BusinessActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activities.EconomicsActivity"
+            android:name=".activities.categories.EconomicsActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activities.EducationActivity"
+            android:name=".activities.categories.EducationActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activities.EntrepreneurshipActivity"
+            android:name=".activities.categories.EntrepreneurshipActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activities.FashionActivity"
+            android:name=".activities.categories.FashionActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activities.FitnessActivity"
+            android:name=".activities.categories.FitnessActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activities.MusicActivity"
+            android:name=".activities.categories.MusicActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activities.PetActivity"
+            android:name=".activities.categories.PetActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activities.ScienceActivity"
+            android:name=".activities.categories.ScienceActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activities.SportsActivity"
+            android:name=".activities.categories.SportsActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activities.TechnologyActivity"
+            android:name=".activities.categories.TechnologyActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activities.TravelActivity"
+            android:name=".activities.categories.TravelActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.WelcomeScreen"

@@ -1,4 +1,4 @@
-package com.qna.activities;
+package com.qna.activities.categories;
 
 import android.content.Intent;
 import android.os.Bundle;

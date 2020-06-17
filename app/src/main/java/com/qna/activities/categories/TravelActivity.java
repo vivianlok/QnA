@@ -1,33 +1,26 @@
-package com.qna.activities;
-
-import androidx.appcompat.app.AppCompatActivity;
+package com.qna.activities.categories;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.qna.R;
 
-import org.w3c.dom.Text;
-
-public class FoodActivity extends AppCompatActivity {
-
+public class TravelActivity extends AppCompatActivity {
     Intent receiveIntentFromWelcomeActivity;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_food);
-
+        setContentView(R.layout.activity_travel);
         receiveIntentFromWelcomeActivity = getIntent();
-
 
         if (receiveIntentFromWelcomeActivity.getExtras() != null){
 
             String title = receiveIntentFromWelcomeActivity.getStringExtra("title");
             TextView titleTextView = findViewById(R.id.toolbarTitleTextView);
             titleTextView.setText(title);
-        }
-    }
-
-}
+        } //End of if - receive Intent
+    }//End of oncreate method
+} //End of class

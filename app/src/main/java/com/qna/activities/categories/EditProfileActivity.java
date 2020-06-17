@@ -1,4 +1,4 @@
-package com.qna.activities;
+package com.qna.activities.categories;
 
 import androidx.appcompat.app.AppCompatActivity;
 

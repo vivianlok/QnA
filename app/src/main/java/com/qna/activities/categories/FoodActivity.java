@@ -1,4 +1,4 @@
-package com.qna.activities;
+package com.qna.activities.categories;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -10,14 +10,14 @@ import com.qna.R;
 
 import org.w3c.dom.Text;
 
-public class EducationActivity extends AppCompatActivity {
+public class FoodActivity extends AppCompatActivity {
 
     Intent receiveIntentFromWelcomeActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_education);
+        setContentView(R.layout.activity_food);
 
         receiveIntentFromWelcomeActivity = getIntent();
 
