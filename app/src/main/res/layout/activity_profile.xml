@@ -28,12 +28,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <ImageView
+                <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/profile_picture"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:src="@drawable/icon_face" />
-
+                <Button
+                    android:id="@+id/editProfileButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_marginLeft="15dp"
+                    android:layout_below="@+id/profile_picture"
+                    android:text="Edit Profile" />
                 <ImageView
                     android:id="@+id/logout_picture"
                     android:layout_width="50dp"

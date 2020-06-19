@@ -6,6 +6,9 @@ import androidx.cardview.widget.CardView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -143,7 +146,9 @@ public class WelcomeScreen extends AppCompatActivity implements View.OnClickList
 
         };
 
-    }
+    } // End of onCreateMethod
+
+
 
     private void checkForNewUsers(String userId) {
 
@@ -275,6 +280,34 @@ public class WelcomeScreen extends AppCompatActivity implements View.OnClickList
             FirebaseAuth.getInstance().signOut();
             Toast.makeText(this, "Successfully logged out", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.welcome_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.profileMenuItem:
+                goToProfilePage();
+                return true;
+            case R.id.logouttMenuItem:
+                FirebaseAuth.getInstance().signOut();
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void goToProfilePage() {
+        Intent goToProfilePageActivity = new Intent (WelcomeScreen.this, ProfileActivity.class);
+        startActivity(goToProfilePageActivity);
     }
 
     @Override

@@ -26,6 +26,7 @@
                 android:text="New question posted" />
 
             <TextView
+                android:id="@+id/dateTextView"
                 android:layout_alignParentRight="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -35,13 +36,22 @@
         </RelativeLayout>
 
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_below="@id/topRelativeLayout"
             android:layout_marginTop="12dp"
             android:src="@drawable/icon_face"
             android:id="@+id/userAvatarImageView" />
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/topRelativeLayout"
+            android:layout_marginTop="12dp"
+            android:src="@drawable/country_icon"
+            android:id="@+id/country_icon" />
 
         <TextView
             android:id="@+id/userNameTextView"
@@ -70,6 +80,7 @@
                 android:src="@drawable/search_icon" />
 
             <TextView
+                android:id="@+id/viewTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="274k"
@@ -108,7 +119,7 @@
                     android:layout_height="wrap_content"
                     android:text="Last Answered By" />
 
-                <ImageView
+                <de.hdodenhof.circleimageview.CircleImageView
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_below="@id/lastAnsweredByTextView"
@@ -129,6 +140,7 @@
                     android:id="@+id/replyUserNameTextView" />
 
                 <TextView
+                    android:id="@+id/lastAnswerTV"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="This is a sample text which represents the last reply fromall users that responded to the question"
@@ -149,6 +161,7 @@
             android:orientation="horizontal">
 
             <Button
+                android:id="@+id/answerButton"
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
                 android:textSize="12sp"
@@ -159,6 +172,7 @@
                 />
 
             <Button
+                android:id="@+id/viewAnswerButton"
                 android:background="@drawable/round_btn_white"
                 android:layout_width="wrap_content"
                 android:textColor="@color/colorPrimary"
@@ -181,12 +195,14 @@
             android:orientation="horizontal">
 
             <ImageView
+                android:id="@+id/flagImage"
                 android:layout_width="35dp"
                 android:layout_marginRight="12dp"
                 android:layout_height="35dp"
                 android:src="@drawable/icon_flag" />
 
             <ImageView
+                android:id="@+id/shareImage"
                 android:layout_width="35dp"
                 android:backgroundTint="@color/colorPrimary"
                 android:layout_height="35dp"

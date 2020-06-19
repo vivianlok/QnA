@@ -71,8 +71,7 @@
             android:name=".activities.categories.TravelActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activities.WelcomeScreen"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:name=".activities.WelcomeScreen"></activity>
 
         <meta-data
             android:name="preloaded_fonts"

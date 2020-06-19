@@ -49,9 +49,11 @@ public class PostQuestionActivity extends AppCompatActivity implements AdapterVi
     ImageView currentUserAvatarImageView;
 
     String userID, currentDate, currentTime;
+    Uri dataUri;
 
     String selectedCategory = "Food"; //setting variable
-    private static final String[] category = {"Food", "Entrepreneurship", "Education", "Fashion", "Fitness", "Book", "Art", "Pet", "Music", "Economics", "Business", "Travel", "Technology", "Sports", "Science"};
+    private static final String[] category
+            = {"Food", "Entrepreneurship", "Education", "Fashion", "Fitness", "Book", "Art", "Pet", "Music", "Economics", "Business", "Travel", "Technology", "Sports", "Science"};
 
 
 
@@ -94,7 +96,7 @@ public class PostQuestionActivity extends AppCompatActivity implements AdapterVi
         attachmentButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                uploadAttachment();
+                slectAttachment();
             }
         });
 
@@ -180,7 +182,7 @@ public class PostQuestionActivity extends AppCompatActivity implements AdapterVi
         }
     }
 
-    private void uploadAttachment() {
+    private void slectAttachment() {
 
         Intent attachment = new Intent(Intent.ACTION_GET_CONTENT);
         attachment.setType("*/*");
@@ -198,7 +200,28 @@ public class PostQuestionActivity extends AppCompatActivity implements AdapterVi
         if (requestCode == 100 && resultCode == RESULT_OK) {
 
 
-            Uri dataUri = data.getData(); //getting path
+             dataUri = data.getData(); //getting path
+
+            attachmentButton.setText("Selected");
+            attachmentButton.setTextColor(Color.BLUE);
+
+
+        }
+
+    }
+
+    private void performActionForAskQuestion() {
+
+
+
+        if(TextUtils.isEmpty(questionTitleET.getText().toString())){
+            Toast.makeText(PostQuestionActivity.this,"Error: Please post a question",Toast.LENGTH_SHORT).show();
+        }
+        else if (TextUtils.isEmpty(descriptionET.getText().toString())){
+            Toast.makeText(PostQuestionActivity.this,"Error: Please post description",Toast.LENGTH_SHORT).show();
+        }
+       else  {
+
 
             StorageReference storageReference = storage.getReference(selectedCategory).child(dataUri.getLastPathSegment()); //getting pic - last path of image
             storageReference.putFile(dataUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -209,19 +232,6 @@ public class PostQuestionActivity extends AppCompatActivity implements AdapterVi
                     attachmentButton.setTextColor(Color.DKGRAY);
                 }
             });
-        }
-
-    }
-
-    private void performActionForAskQuestion() {
-
-        if(TextUtils.isEmpty(questionTitleET.getText().toString())){
-            Toast.makeText(PostQuestionActivity.this,"Error: Please post a question",Toast.LENGTH_SHORT).show();
-        }
-        else if (TextUtils.isEmpty(descriptionET.getText().toString())){
-            Toast.makeText(PostQuestionActivity.this,"Error: Please post description",Toast.LENGTH_SHORT).show();
-        }
-       else  {
 
            String questionId = questionReference.push().getKey();
 
