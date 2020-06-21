@@ -80,7 +80,7 @@ public class FoodActivity extends AppCompatActivity {
 
         QuestionDatabaseReference
                 .orderByChild("category")
-                .equalTo("Food")
+                    .equalTo("Food")
                 .addChildEventListener(new ChildEventListener() {
                     @Override
                     public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {

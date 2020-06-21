@@ -94,7 +94,7 @@ public class ProfileActivity extends AppCompatActivity implements  View.OnClickL
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.editProfileButton){
-            Intent goToEditProfileActivity = new Intent(ProfileActivity.this,EditProfileActivity.class);
+            Intent goToEditProfileActivity = new Intent(ProfileActivity.this, EditProfileActivity.class);
             startActivity(goToEditProfileActivity);
         }
     }

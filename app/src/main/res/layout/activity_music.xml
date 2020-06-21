@@ -7,6 +7,10 @@
     android:orientation="vertical"
     tools:context=".activities.categories.MusicActivity">
 
-    <include layout="@layout/toolbar_layout" />
-
+    <include layout="@layout/toolbar_layout_categories" />
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_margin="12dp"
+        android:id="@+id/QuestionRecyclerView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 </LinearLayout>

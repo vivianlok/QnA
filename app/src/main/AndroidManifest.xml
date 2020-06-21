@@ -9,7 +9,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activities.categories.EditProfileActivity"></activity>
+        <activity android:name=".activities.NewsFeedActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            ></activity>
+        <activity android:name=".activities.categories.EditProfileActivity" />
         <activity android:name=".activities.SplashScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -70,8 +73,7 @@
         <activity
             android:name=".activities.categories.TravelActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".activities.WelcomeScreen"></activity>
+        <activity android:name=".activities.WelcomeScreen" />
 
         <meta-data
             android:name="preloaded_fonts"

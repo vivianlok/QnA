@@ -1,8 +1,10 @@
-package com.qna.activities.categories;
+package com.qna.activities;
 
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -26,8 +28,7 @@ import com.qna.database.QuestionFirebaseItems;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MusicActivity extends AppCompatActivity {
-    Intent receiveIntentFromWelcomeActivity;
+public class NewsFeedActivity extends AppCompatActivity {
     FirebaseAuth firebaseAuth;
     FirebaseUser user;
     FirebaseDatabase firebaseDatabase;
@@ -37,6 +38,8 @@ public class MusicActivity extends AppCompatActivity {
     // create and declare question replies ArrayList
     List<QuestionFirebaseItems> QuestionFirebaseItemsList = new ArrayList<>();
 
+    ImageView categoriesImageView;
+
     RecyclerView QuestionRecyclerView;
     RecyclerView.Adapter questionAdapter;
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -44,9 +47,8 @@ public class MusicActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_music);
+        setContentView(R.layout.activity_news_feed);
 
-        receiveIntentFromWelcomeActivity = getIntent();
 
         firebaseDatabase = FirebaseDatabase.getInstance();
         QuestionDatabaseReference = firebaseDatabase.getReference().child("Questions");
@@ -61,23 +63,27 @@ public class MusicActivity extends AppCompatActivity {
         QuestionRecyclerView.setLayoutManager(allOrdersLinearLayoutManager);
         //Get Intent from Welcome Activity
 
-        receiveIntentFromWelcomeActivity = getIntent();
+        categoriesImageView = findViewById(R.id.categoriesImageView);
+        categoriesImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent goTOCategories = new Intent(NewsFeedActivity.this, WelcomeScreen.class);
+                startActivity(goTOCategories);
+            }
+        });
 
 
-        if (receiveIntentFromWelcomeActivity.getExtras() != null){
 
-            String title = receiveIntentFromWelcomeActivity.getStringExtra("title");
-            TextView titleTextView = findViewById(R.id.toolbarTitleTextView);
-            titleTextView.setText(title);
 
             attachDatabaseReadListener();
-        }
+
     } // End of onCreate method
     public void attachDatabaseReadListener() {
 
         QuestionDatabaseReference
-                .orderByChild("category")
-                .equalTo("Music")
+                //.orderByChild("category")
+                //.equalTo("Music")
                 .addChildEventListener(new ChildEventListener() {
                     @Override
                     public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
@@ -91,7 +97,7 @@ public class MusicActivity extends AppCompatActivity {
                             QuestionFirebaseItemsList.add(QuestionFirebaseItems);
 
                             // set adapter
-                            questionAdapter = new QuestionAdapter(MusicActivity.this,
+                            questionAdapter = new QuestionAdapter(NewsFeedActivity.this,
                                     QuestionFirebaseItemsList);
                             QuestionRecyclerView.setAdapter(questionAdapter);
                             questionAdapter.notifyDataSetChanged();

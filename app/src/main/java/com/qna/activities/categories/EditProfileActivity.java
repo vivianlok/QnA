@@ -35,17 +35,20 @@ import com.ybs.countrypicker.CountryPickerListener;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class EditProfileActivity extends AppCompatActivity implements View.OnClickListener {
-
+    //Global Initializations
     private FirebaseUser currentUser;
     private FirebaseAuth mFirebaseAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
     FirebaseDatabase firebaseDatabase;
     DatabaseReference usersDetailsReference;
+
+    //Storage : Initialize
     private FirebaseApp app;
     private FirebaseStorage storage;
 
+    // XML Steps: Initialize IDS in activity_edit_profile.xml
     EditText nameET, emailET;
-    Button countryButton,updateButton;
+    Button countryButton, updateButton;
     CircleImageView editProfilePictureImage;
 
     String userID;
@@ -56,31 +59,34 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
 
-        firebaseDatabase  = FirebaseDatabase.getInstance();
+        firebaseDatabase = FirebaseDatabase.getInstance();
         usersDetailsReference = firebaseDatabase.getReference().child("Users_Details");
         mFirebaseAuth = FirebaseAuth.getInstance();
+
+        //Current User: Get current user from Firebase Authentication
         currentUser = mFirebaseAuth.getCurrentUser();
 
         //Get storage instance
         app = FirebaseApp.getInstance();
-        storage =FirebaseStorage.getInstance(app);
+        storage = FirebaseStorage.getInstance(app);
 
+        // XML Steps: Declare IDs in activity_edit_profile.xml
         nameET = findViewById(R.id.nameET);
         emailET = findViewById(R.id.emailET);
         countryButton = findViewById(R.id.countryButton);
         updateButton = findViewById(R.id.updateButton);
         editProfilePictureImage = findViewById(R.id.editProfilePictureImage);
-
-        if (currentUser != null){
-            userID = currentUser.getUid();
-            setUserDetails();
-    }
-
-
+        //These buttons need OnClickListener
         updateButton.setOnClickListener(this);
         countryButton.setOnClickListener(this);
         editProfilePictureImage.setOnClickListener(this);
 
+        //Current User: If user is logged in, call function, setUserDetails()
+        if (currentUser != null) {
+            userID = currentUser.getUid();
+            setUserDetails();
+        }
+        //Country Picker Button
         countryButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -99,46 +105,44 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
     }
 
 
-
     private void setUserDetails() {
-
+        //Current User: Get DisplayName and Email and set them as the XML variables
         nameET.setText(currentUser.getDisplayName());
         emailET.setText(currentUser.getEmail());
 
-        usersDetailsReference.
-                child(userID)
+        usersDetailsReference
+                .child(userID)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                String avatar = dataSnapshot.child("avatar").getValue(String.class);
+                        String avatar = dataSnapshot.child("avatar").getValue(String.class);
 
-                if (avatar != null) {
-                    Picasso.get()
-                            .load(avatar)
-                            .into(editProfilePictureImage);
-                }
-            }
+                        if (avatar != null) {
+                            Picasso.get()
+                                    .load(avatar)
+                                    .into(editProfilePictureImage);
+                        }
+                    }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
 
-            }
-        });
+                    }
+                });
     }
 
     @Override
     public void onClick(View v) {
-        if (v.getId() == R.id.updateButton){
-            updateUSersDetails();
-        }
-        else if (v.getId() == R.id.editProfilePictureImage){
-            slectAttachment();
+        if (v.getId() == R.id.updateButton) {
+            updateUsersDetails();
+        } else if (v.getId() == R.id.editProfilePictureImage) {
+            selectAttachment();
         }
     }
 
 
-    private void slectAttachment() {
+    private void selectAttachment() {
 
         Intent attachment = new Intent(Intent.ACTION_GET_CONTENT);
         attachment.setType("*/*");
@@ -177,26 +181,22 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
                         }
                     });
 
-                    // Ends here
                 }
             });
 
         }
 
-    }
+    } //End of onActivityResult
 
-    private void updateUSersDetails() {
+    private void updateUsersDetails() {
 
-        if (TextUtils.isEmpty(nameET.getText().toString())){
-            Toast.makeText(EditProfileActivity.this, "Error: Please fill out Name",Toast.LENGTH_SHORT).show();
-        }
-        else if  (TextUtils.isEmpty(countryButton.getText().toString())){
-            Toast.makeText(EditProfileActivity.this, "Error: Please fill out Country",Toast.LENGTH_SHORT).show();
-        }
-        else if  (TextUtils.isEmpty(emailET.getText().toString())){
-            Toast.makeText(EditProfileActivity.this, "Error: Please fill out Email",Toast.LENGTH_SHORT).show();
-        }
-        else{
+        if (TextUtils.isEmpty(nameET.getText().toString())) {
+            Toast.makeText(EditProfileActivity.this, "Error: Please fill out Name", Toast.LENGTH_SHORT).show();
+        } else if (TextUtils.isEmpty(countryButton.getText().toString())) {
+            Toast.makeText(EditProfileActivity.this, "Error: Please fill out Country", Toast.LENGTH_SHORT).show();
+        } else if (TextUtils.isEmpty(emailET.getText().toString())) {
+            Toast.makeText(EditProfileActivity.this, "Error: Please fill out Email", Toast.LENGTH_SHORT).show();
+        } else {
             UserDetailsFirebaseItem userDetailsFirebaseItem = new UserDetailsFirebaseItem(
                     nameET.getText().toString(),
                     emailET.getText().toString(),
@@ -205,12 +205,12 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
 
             usersDetailsReference.child(userID).setValue(userDetailsFirebaseItem)
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
-                @Override
-                public void onSuccess(Void aVoid) {
+                        @Override
+                        public void onSuccess(Void aVoid) {
 
-                    Toast.makeText(EditProfileActivity.this, "Details Successfully Updated", Toast.LENGTH_SHORT).show();
-                }
-            });
+                            Toast.makeText(EditProfileActivity.this, "Details Successfully Updated", Toast.LENGTH_SHORT).show();
+                        }
+                    });
         }
     }
-}
+} //End of EditProfileActivity Class

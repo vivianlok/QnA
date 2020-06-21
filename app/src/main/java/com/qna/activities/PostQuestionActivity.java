@@ -1,5 +1,6 @@
 package com.qna.activities;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -21,8 +22,11 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -39,6 +43,7 @@ public class PostQuestionActivity extends AppCompatActivity implements AdapterVi
     private FirebaseAuth.AuthStateListener mAuthStateListener;
     FirebaseDatabase firebaseDatabase;
     DatabaseReference usersDetailsReference, questionReference;
+
     private FirebaseApp app;
     private FirebaseStorage storage;
 
@@ -96,7 +101,7 @@ public class PostQuestionActivity extends AppCompatActivity implements AdapterVi
         attachmentButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                slectAttachment();
+                selectAttachment();
             }
         });
 
@@ -182,7 +187,7 @@ public class PostQuestionActivity extends AppCompatActivity implements AdapterVi
         }
     }
 
-    private void slectAttachment() {
+    private void selectAttachment() {
 
         Intent attachment = new Intent(Intent.ACTION_GET_CONTENT);
         attachment.setType("*/*");
@@ -223,6 +228,7 @@ public class PostQuestionActivity extends AppCompatActivity implements AdapterVi
        else  {
 
 
+
             StorageReference storageReference = storage.getReference(selectedCategory).child(dataUri.getLastPathSegment()); //getting pic - last path of image
             storageReference.putFile(dataUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
@@ -233,14 +239,14 @@ public class PostQuestionActivity extends AppCompatActivity implements AdapterVi
                 }
             });
 
-           String questionId = questionReference.push().getKey();
+            String questionId = questionReference.push().getKey();
 
 
 
             QuestionFirebaseItems questionFirebaseItems
                     = new QuestionFirebaseItems(
-                            questionId,
-                            currentUser.getDisplayName(),
+                    questionId,
+                    currentUser.getDisplayName(),
                     "",
                     currentDate,
                     currentTime,
@@ -256,16 +262,18 @@ public class PostQuestionActivity extends AppCompatActivity implements AdapterVi
             questionReference.child(questionId)
                     .setValue(questionFirebaseItems)
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
-                @Override
-                public void onSuccess(Void aVoid) {
+                        @Override
+                        public void onSuccess(Void aVoid) {
 
-                    questionTitleET.setText("");
-                    descriptionET.setText("");
-                }
-            });
+                            questionTitleET.setText("");
+                            descriptionET.setText("");
+                        }
+                    });
 
         }
     }
+
+
 
     private void setUserDetails() {
 

@@ -7,18 +7,36 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.qna.R;
 import com.qna.database.QuestionFirebaseItems;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 
 public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.ViewHolder> {
 
+
+    private FirebaseUser currentUser;
+    private FirebaseAuth mFirebaseAuth;
+    FirebaseDatabase firebaseDatabase;
+    DatabaseReference usersDetailsReference;
+    String userID;
 
 
     Activity activity;
@@ -32,6 +50,16 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.ViewHo
 
         this.questionFirebaseItemsList = questionFirebaseItems;
         this.activity = activity;
+
+        firebaseDatabase  = FirebaseDatabase.getInstance();
+        usersDetailsReference = firebaseDatabase.getReference().child("Users_Details");
+        mFirebaseAuth = FirebaseAuth.getInstance();
+        currentUser = mFirebaseAuth.getCurrentUser();
+
+        if (currentUser != null){
+
+            userID = currentUser.getUid();
+        }
 
 
     }
@@ -59,6 +87,29 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.ViewHo
         holder.questionTextView.setText(questionFirebaseItems.getTitle());
         holder.dateTextView.setText(questionFirebaseItems.getDate());
         holder.userNameTextView.setText(questionFirebaseItems.getFullName());
+        holder.categoryTextView.setText(questionFirebaseItems.getCategory());
+
+        usersDetailsReference.child(questionFirebaseItems.getAuthorId())
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                        String authorAvatar = dataSnapshot.child("avatar").getValue(String.class);
+
+                        if (authorAvatar != null){
+
+                            Picasso.get()
+                                    .load(authorAvatar)
+                                    .into(holder.userAvatarImageView);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
     }  // End of onBindViewHolder
 
 
@@ -74,8 +125,9 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.ViewHo
 
 
         // Declare properties for question items
-        public TextView userNameTextView,questionTextView,dateTextView;
-        public ImageView userAvatarImageView,flagImage,shareImage;
+        public TextView userNameTextView,questionTextView,dateTextView, categoryTextView;
+        public ImageView flagImage,shareImage;
+        public CircleImageView userAvatarImageView;
 
 
 
@@ -92,6 +144,7 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.ViewHo
             userAvatarImageView = itemView.findViewById(R.id.userAvatarImageView);
             flagImage = itemView.findViewById(R.id.flagImage);
             shareImage = itemView.findViewById(R.id.shareImage);
+            categoryTextView = itemView.findViewById(R.id.categoryTextView);
 
 
 

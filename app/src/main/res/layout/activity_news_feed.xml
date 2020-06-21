@@ -5,9 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".activities.categories.EducationActivity">
+    tools:context=".activities.NewsFeedActivity">
 
-    <include layout="@layout/toolbar_layout_categories" />
+    <include layout="@layout/toolbar_feeds" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:layout_margin="12dp"
         android:id="@+id/QuestionRecyclerView"
