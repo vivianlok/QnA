@@ -2,6 +2,7 @@ package com.qna.adapter;
 
 import android.app.Activity;
 import android.os.Build;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,6 +38,7 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.ViewHo
     FirebaseDatabase firebaseDatabase;
     DatabaseReference usersDetailsReference;
     String userID;
+    //ImageView flagImage;
 
 
     Activity activity;
@@ -69,7 +71,8 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.ViewHo
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_questions, parent, false);
-        ViewHolder viewHolder = new ViewHolder(view);
+        ViewHolder viewHolder;
+        viewHolder = new ViewHolder(view);
 
 
         return viewHolder;
@@ -109,7 +112,13 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.ViewHo
 
                     }
                 });
+        holder.shareImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(activity.getApplicationContext(),"Sharing to external link!", Toast.LENGTH_LONG).show();
 
+            }
+        });
     }  // End of onBindViewHolder
 
 

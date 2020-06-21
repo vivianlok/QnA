@@ -51,10 +51,18 @@
             android:layout_height="50dp"
             android:layout_alignParentRight="true"
             android:layout_below="@id/topRelativeLayout"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="0dp"
             android:src="@drawable/country_icon"
             android:id="@+id/country_icon" />
-
+        <TextView
+            android:id="@+id/countryTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Country"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/country_icon"
+            android:layout_marginTop="0dp"
+             />
         <TextView
             android:id="@+id/userNameTextView"
             android:layout_marginLeft="7dp"
