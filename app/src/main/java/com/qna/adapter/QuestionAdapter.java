@@ -1,7 +1,9 @@
 package com.qna.adapter;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Build;
+import android.text.Html;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -98,6 +100,11 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.ViewHo
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
                         String authorAvatar = dataSnapshot.child("avatar").getValue(String.class);
+                        String authorCountry = dataSnapshot.child("country").getValue(String.class);
+
+                        assert  authorCountry != null;
+
+                        holder.countryTV.setText(authorCountry);
 
                         if (authorAvatar != null){
 
@@ -115,8 +122,14 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.ViewHo
         holder.shareImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(activity.getApplicationContext(),"Sharing to external link!", Toast.LENGTH_LONG).show();
+                String textToShare = questionFirebaseItems.getTitle();
+                Intent intent = new Intent(android.content.Intent.ACTION_SEND);
 
+                intent.setType("text/html");
+                intent.putExtra(Intent.EXTRA_SUBJECT, "sample");
+                intent.putExtra(Intent.EXTRA_TEXT, Html.fromHtml(textToShare));
+
+                activity.startActivity(Intent.createChooser(intent, "Share Quetions with your friends"));
             }
         });
     }  // End of onBindViewHolder
@@ -134,7 +147,7 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.ViewHo
 
 
         // Declare properties for question items
-        public TextView userNameTextView,questionTextView,dateTextView, categoryTextView;
+        public TextView userNameTextView,questionTextView,dateTextView, categoryTextView, countryTV;
         public ImageView flagImage,shareImage;
         public CircleImageView userAvatarImageView;
 
@@ -154,6 +167,7 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.ViewHo
             flagImage = itemView.findViewById(R.id.flagImage);
             shareImage = itemView.findViewById(R.id.shareImage);
             categoryTextView = itemView.findViewById(R.id.categoryTextView);
+            countryTV = itemView.findViewById(R.id.countryTV);
 
 
 

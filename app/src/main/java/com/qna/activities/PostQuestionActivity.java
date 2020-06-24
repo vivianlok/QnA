@@ -54,7 +54,7 @@ public class PostQuestionActivity extends AppCompatActivity implements AdapterVi
     ImageView currentUserAvatarImageView;
 
     String userID, currentDate, currentTime;
-    Uri dataUri;
+    Uri dataUri = null;
 
     String selectedCategory = "Food"; //setting variable
     private static final String[] category
@@ -229,15 +229,18 @@ public class PostQuestionActivity extends AppCompatActivity implements AdapterVi
 
 
 
-            StorageReference storageReference = storage.getReference(selectedCategory).child(dataUri.getLastPathSegment()); //getting pic - last path of image
-            storageReference.putFile(dataUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
-                    attachmentButton.setText("Attachment Added");
-                    attachmentButton.setTextColor(Color.DKGRAY);
-                }
-            });
+           if (dataUri != null){
+               StorageReference storageReference = storage.getReference(selectedCategory).child(dataUri.getLastPathSegment()); //getting pic - last path of image
+               storageReference.putFile(dataUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                   @Override
+                   public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                       attachmentButton.setText("Attachment Added");
+                       attachmentButton.setTextColor(Color.DKGRAY);
+                   }
+               });
+           }
 
             String questionId = questionReference.push().getKey();
 
@@ -254,7 +257,8 @@ public class PostQuestionActivity extends AppCompatActivity implements AdapterVi
                     descriptionET.getText().toString(),
                     "",
                     selectedCategory,
-                    userID
+                    userID,
+                    0
 
 
             );
@@ -267,12 +271,18 @@ public class PostQuestionActivity extends AppCompatActivity implements AdapterVi
 
                             questionTitleET.setText("");
                             descriptionET.setText("");
+                            showToast("Question successfully submitted.");
+                            finish();
                         }
                     });
 
         }
     }
 
+    public void  showToast(String text){
+
+        Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
+    }
 
 
     private void setUserDetails() {

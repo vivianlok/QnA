@@ -69,9 +69,9 @@
                         <EditText
                             android:id="@+id/descriptionET"
                             android:layout_width="match_parent"
-                            android:layout_height="50dp"
+                            android:layout_height="100dp"
                             android:layout_below="@id/questionTitleET"
-                            android:layout_marginTop="54dp"
+                            android:layout_marginTop="10dp"
                             android:background="@color/white"
                             android:gravity="center"
                             android:hint="QuestionDescription Here" />

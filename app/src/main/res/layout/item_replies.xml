@@ -55,8 +55,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="10dp
-"
+                    android:padding="10dp"
                     android:text="This is a sample text which represents the last reply fromall users that responded to the question"
                     android:layout_below="@id/replyUserNameTextView"
                     android:layout_toRightOf="@id/replyUserAvatarImageView"

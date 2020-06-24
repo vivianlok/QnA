@@ -12,12 +12,13 @@ public class QuestionFirebaseItems {
     String attachment;
     String category;
     String authorId;
+    int viewsCount;
 
     public QuestionFirebaseItems(){
 
     }
 
-    public QuestionFirebaseItems(String questionId, String fullName, String avatar, String date, String time, String title, String description, String attachment, String category, String authorId) {
+    public QuestionFirebaseItems(String questionId, String fullName, String avatar, String date, String time, String title, String description, String attachment, String category, String authorId, int viewsCount) {
         this.questionId = questionId;
         this.fullName = fullName;
         this.avatar = avatar;
@@ -28,6 +29,7 @@ public class QuestionFirebaseItems {
         this.attachment = attachment;
         this.category = category;
         this.authorId = authorId;
+        this.viewsCount = viewsCount;
     }
 
     public String getQuestionId() {
@@ -108,5 +110,13 @@ public class QuestionFirebaseItems {
 
     public void setAuthorId(String authorId) {
         this.authorId = authorId;
+    }
+
+    public int getViewsCount() {
+        return viewsCount;
+    }
+
+    public void setViewsCount(int viewsCount) {
+        this.viewsCount = viewsCount;
     }
 }
