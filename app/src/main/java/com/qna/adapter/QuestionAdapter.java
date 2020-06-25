@@ -8,6 +8,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,6 +25,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.qna.R;
+import com.qna.activities.RepliesActivity;
 import com.qna.database.QuestionFirebaseItems;
 import com.squareup.picasso.Picasso;
 
@@ -94,6 +96,14 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.ViewHo
         holder.userNameTextView.setText(questionFirebaseItems.getFullName());
         holder.categoryTextView.setText(questionFirebaseItems.getCategory());
 
+        if (questionFirebaseItems != null){
+            holder.viewTextView.setText("" + questionFirebaseItems.getViewsCount());
+        } else {
+
+            holder.viewTextView.setText("0");
+        }
+
+
         usersDetailsReference.child(questionFirebaseItems.getAuthorId())
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
@@ -132,9 +142,31 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.ViewHo
                 activity.startActivity(Intent.createChooser(intent, "Share Quetions with your friends"));
             }
         });
+
+        holder.answerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                goToRepliesActivity(questionFirebaseItems);
+            }
+        });
+
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                goToRepliesActivity(questionFirebaseItems);
+            }
+        });
     }  // End of onBindViewHolder
 
+    private void goToRepliesActivity(QuestionFirebaseItems questionFirebaseItems) {
 
+        Intent intent = new Intent(activity, RepliesActivity.class);
+        intent.putExtra("qID", questionFirebaseItems.getQuestionId());
+        intent.putExtra("title", questionFirebaseItems.getTitle());
+        activity.startActivity(intent);
+    }
 
 
     @Override
@@ -147,9 +179,11 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.ViewHo
 
 
         // Declare properties for question items
-        public TextView userNameTextView,questionTextView,dateTextView, categoryTextView, countryTV;
+        public TextView userNameTextView,questionTextView,dateTextView, categoryTextView,
+                countryTV,viewTextView;
         public ImageView flagImage,shareImage;
         public CircleImageView userAvatarImageView;
+        public Button answerButton;
 
 
 
@@ -161,6 +195,7 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.ViewHo
             // Initialize all properties
 
             userNameTextView = itemView.findViewById(R.id.userNameTextView);
+            viewTextView = itemView.findViewById(R.id.viewTextView);
             questionTextView = itemView.findViewById(R.id.questionTextView);
             dateTextView = itemView.findViewById(R.id.dateTextView);
             userAvatarImageView = itemView.findViewById(R.id.userAvatarImageView);
@@ -168,7 +203,7 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.ViewHo
             shareImage = itemView.findViewById(R.id.shareImage);
             categoryTextView = itemView.findViewById(R.id.categoryTextView);
             countryTV = itemView.findViewById(R.id.countryTV);
-
+            answerButton = itemView.findViewById(R.id.answerButton);
 
 
         }

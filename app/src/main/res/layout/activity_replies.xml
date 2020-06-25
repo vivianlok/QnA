@@ -31,6 +31,7 @@
     android:orientation="horizontal">
 
 <Button
+    android:id="@+id/attachmentButton"
     android:layout_width="wrap_content"
     android:paddingLeft="15dp"
     android:paddingRight="15dp"
@@ -45,6 +46,7 @@
     android:layout_height="wrap_content"
     android:layout_marginLeft="30dp"
     android:tint="@color/white"
+    android:id="@+id/shareImage"
     android:src="@drawable/icon_share"/>
 </LinearLayout>
     <LinearLayout
@@ -79,28 +81,32 @@
             android:layout_height="40dp"
             android:src="@drawable/icon_eye"
             android:layout_marginLeft="10dp"/>
+
         <TextView
+            android:id="@+id/viewsTV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
             android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
             android:gravity="bottom"
-            android:text="357"/>
+            android:text="0" />
     </LinearLayout>
 </LinearLayout>
     <!-- ****************Top View ends here ************* -->
 
+
+    <!-- ****************Bottom View starts here ************* -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/repliesLayout"
-        android:layout_below="@+id/topLinearLayout"
         android:layout_width="match_parent"
-        android:layout_above="@id/replyBottomLinearLayout"
         android:layout_height="match_parent"
-        tools:listitem="@layout/item_replies"/>
+        android:layout_above="@id/replyBottomLinearLayout"
+        android:layout_below="@+id/topLinearLayout"
+        android:layout_marginTop="-1dp"
+        android:layout_marginBottom="2dp"
+        tools:listitem="@layout/item_replies" />
 
-
-<!-- ****************Bottom View starts here ************* -->
-<LinearLayout
+    <LinearLayout
     android:id="@+id/replyBottomLinearLayout"
     android:background="@color/white"
     android:layout_width="match_parent"
@@ -108,9 +114,11 @@
     android:layout_height="wrap_content"
     android:layout_alignParentBottom="true"
     android:orientation="horizontal">
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView
         android:layout_width="50dp"
         android:layout_height="50dp"
+        android:id="@+id/currentUserAvatarImageView"
+        app:civ_border_width="2dp"
         android:src="@drawable/icon_face"/>
     <EditText
         android:layout_width="match_parent"
