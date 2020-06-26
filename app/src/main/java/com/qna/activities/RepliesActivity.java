@@ -4,8 +4,10 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.CalendarContract;
 import android.text.Html;
 import android.view.View;
 import android.widget.Button;
@@ -62,6 +64,7 @@ Button attachmentButton;
         shareImage = findViewById(R.id.shareImage);
         viewsTV = findViewById(R.id.viewsTV);
         currentUserAvatarImageView = findViewById(R.id.currentUserAvatarImageView);
+        attachmentButton = findViewById(R.id.attachmentButton);
 
         getInfoFromMainActivity = getIntent(); // get intent
 
@@ -126,6 +129,15 @@ Button attachmentButton;
 
                         //Fetching the views count from the Firebase
                         final Integer viewsCount = dataSnapshot.child("viewsCount").getValue(Integer.class);
+                        String attachment = dataSnapshot.child("attachment").getValue(String.class);
+                        assert  attachment != null;
+
+                        if (!attachment.equalsIgnoreCase("")){
+
+                            attachmentButton.setText("Download Attachment");
+                            attachmentButton.setTextColor(Color.WHITE);
+                            attachmentButton.setBackgroundResource(R.drawable.round_btn);
+                        }
 
                         assert viewsCount != null;
                         viewsTV.setText("" + viewsCount);

@@ -13,12 +13,13 @@ public class QuestionFirebaseItems {
     String category;
     String authorId;
     int viewsCount;
+    boolean flagged;
 
     public QuestionFirebaseItems(){
 
     }
 
-    public QuestionFirebaseItems(String questionId, String fullName, String avatar, String date, String time, String title, String description, String attachment, String category, String authorId, int viewsCount) {
+    public QuestionFirebaseItems(String questionId, String fullName, String avatar, String date, String time, String title, String description, String attachment, String category, String authorId, int viewsCount, boolean flagged) {
         this.questionId = questionId;
         this.fullName = fullName;
         this.avatar = avatar;
@@ -30,6 +31,7 @@ public class QuestionFirebaseItems {
         this.category = category;
         this.authorId = authorId;
         this.viewsCount = viewsCount;
+        this.flagged = flagged;
     }
 
     public String getQuestionId() {
@@ -118,5 +120,13 @@ public class QuestionFirebaseItems {
 
     public void setViewsCount(int viewsCount) {
         this.viewsCount = viewsCount;
+    }
+
+    public boolean isFlagged() {
+        return flagged;
+    }
+
+    public void setFlagged(boolean flagged) {
+        this.flagged = flagged;
     }
 }

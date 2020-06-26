@@ -228,7 +228,7 @@ public class PostQuestionActivity extends AppCompatActivity implements AdapterVi
        else  {
 
 
-
+            final String questionId = questionReference.push().getKey();
 
            if (dataUri != null){
                StorageReference storageReference = storage.getReference(selectedCategory).child(dataUri.getLastPathSegment()); //getting pic - last path of image
@@ -240,43 +240,56 @@ public class PostQuestionActivity extends AppCompatActivity implements AdapterVi
                        attachmentButton.setTextColor(Color.DKGRAY);
                    }
                });
+
+               storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                   @Override
+                   public void onSuccess(Uri uri) {
+
+                    String   downloadedUriForAttachment = uri.toString();
+                       saveQuestionToDatabase(questionId, downloadedUriForAttachment);
+                   }
+               });
+           } else {
+
+               saveQuestionToDatabase(questionId, "");
+
            }
 
-            String questionId = questionReference.push().getKey();
-
-
-
-            QuestionFirebaseItems questionFirebaseItems
-                    = new QuestionFirebaseItems(
-                    questionId,
-                    currentUser.getDisplayName(),
-                    "",
-                    currentDate,
-                    currentTime,
-                    questionTitleET.getText().toString(),
-                    descriptionET.getText().toString(),
-                    "",
-                    selectedCategory,
-                    userID,
-                    0
-
-
-            );
-
-            questionReference.child(questionId)
-                    .setValue(questionFirebaseItems)
-                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-
-                            questionTitleET.setText("");
-                            descriptionET.setText("");
-                            showToast("Question successfully submitted.");
-                            finish();
-                        }
-                    });
-
         }
+    }
+
+    private void saveQuestionToDatabase(String questionId, String attachment) {
+
+        QuestionFirebaseItems questionFirebaseItems
+                = new QuestionFirebaseItems(
+                questionId,
+                currentUser.getDisplayName(),
+                "",
+                currentDate,
+                currentTime,
+                questionTitleET.getText().toString(),
+                descriptionET.getText().toString(),
+                attachment,
+                selectedCategory,
+                userID,
+                0,
+                false
+
+
+        );
+
+        questionReference.child(questionId)
+                .setValue(questionFirebaseItems)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+
+                        questionTitleET.setText("");
+                        descriptionET.setText("");
+                        showToast("Question successfully submitted.");
+                        finish();
+                    }
+                });
     }
 
     public void  showToast(String text){

@@ -222,8 +222,7 @@
                 android:id="@+id/flagImage"
                 android:layout_width="35dp"
                 android:layout_marginRight="12dp"
-                android:layout_height="35dp"
-                android:src="@drawable/icon_flag" />
+                android:layout_height="35dp" />
 
             <ImageView
                 android:id="@+id/shareImage"

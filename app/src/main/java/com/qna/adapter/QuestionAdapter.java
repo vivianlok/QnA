@@ -17,6 +17,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -40,7 +41,7 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.ViewHo
     private FirebaseUser currentUser;
     private FirebaseAuth mFirebaseAuth;
     FirebaseDatabase firebaseDatabase;
-    DatabaseReference usersDetailsReference;
+    DatabaseReference usersDetailsReference, questionReference;
     String userID;
     //ImageView flagImage;
 
@@ -48,7 +49,7 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.ViewHo
     Activity activity;
     List<QuestionFirebaseItems> questionFirebaseItemsList;
     View view;
-
+    Boolean flaggedValue;
 
 
 
@@ -59,6 +60,7 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.ViewHo
 
         firebaseDatabase  = FirebaseDatabase.getInstance();
         usersDetailsReference = firebaseDatabase.getReference().child("Users_Details");
+        questionReference = firebaseDatabase.getReference().child("Questions");
         mFirebaseAuth = FirebaseAuth.getInstance();
         currentUser = mFirebaseAuth.getCurrentUser();
 
@@ -103,6 +105,40 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.ViewHo
             holder.viewTextView.setText("0");
         }
 
+
+
+
+        performLogicFOrFlagImageClick(holder, questionFirebaseItems, questionReference);
+        logicForFlaggedQuestions(holder, questionFirebaseItems, questionReference);
+
+
+        questionReference.child(questionFirebaseItems.getQuestionId())
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                        Boolean flagged = dataSnapshot.child("flagged").getValue(Boolean.class);
+
+                        if (flagged != null){
+                            if (flagged){
+
+
+                                holder.flagImage.setBackgroundResource(R.drawable.icon_red_flag);
+                            } else
+                            {
+                                holder.flagImage.setBackgroundResource(R.drawable.flag_icon);
+                            }
+                        } else {
+
+                            holder.flagImage.setBackgroundResource(R.drawable.flag_icon);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
 
         usersDetailsReference.child(questionFirebaseItems.getAuthorId())
                 .addListenerForSingleValueEvent(new ValueEventListener() {
@@ -158,7 +194,73 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.ViewHo
                 goToRepliesActivity(questionFirebaseItems);
             }
         });
+
     }  // End of onBindViewHolder
+
+    private void logicForFlaggedQuestions(final ViewHolder holder, final QuestionFirebaseItems questionFirebaseItems, final DatabaseReference questionReference) {
+
+       // if (questionFirebaseItems.flagged() != null){
+
+            if (questionFirebaseItems.isFlagged()){
+
+                holder.flagImage.setBackgroundResource(R.drawable.icon_red_flag);
+            } else {
+
+                holder.flagImage.setBackgroundResource(R.drawable.flag_icon);
+            }
+
+    }
+
+    private void performLogicFOrFlagImageClick(final ViewHolder holder, final QuestionFirebaseItems questionFirebaseItems, final DatabaseReference questionReference) {
+
+        holder.flagImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                questionReference.child(questionFirebaseItems.getQuestionId())
+                        .addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                                Boolean flagged = dataSnapshot.child("flagged").getValue(Boolean.class);
+
+                                if (flagged != null){
+
+
+                                    questionReference.child(questionFirebaseItems.getQuestionId())
+                                            .child("flagged").setValue(flagged ? false : true).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void aVoid) {
+
+                                            if (questionFirebaseItems.isFlagged() == true){
+                                                Toast.makeText(activity, "Successfully Flagged", Toast.LENGTH_SHORT).show();
+                                                holder.flagImage.setBackgroundResource(R.drawable.icon_red_flag);
+                                            } else if (questionFirebaseItems.isFlagged() == false){
+
+                                                Toast.makeText(activity, "Unflagged", Toast.LENGTH_SHORT).show();
+                                                holder.flagImage.setBackgroundResource(R.drawable.flag_icon);
+                                            }
+                                        }
+                                    });
+
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                            }
+                        });
+
+
+
+
+
+
+
+            }
+        });
+    }
 
     private void goToRepliesActivity(QuestionFirebaseItems questionFirebaseItems) {
 
