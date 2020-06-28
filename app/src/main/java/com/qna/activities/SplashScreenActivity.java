@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import com.qna.R;
 
@@ -25,6 +26,7 @@ public class SplashScreenActivity extends Activity {
                 Intent goToNewsFeedActivity = new Intent(SplashScreenActivity.this, NewsFeedActivity.class);
                 startActivity(goToNewsFeedActivity);
                 finish();
+
             }
         }, 3000);
     }

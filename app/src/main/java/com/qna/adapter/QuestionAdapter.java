@@ -3,6 +3,7 @@ package com.qna.adapter;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
+import android.os.Handler;
 import android.text.Html;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -26,7 +27,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.qna.R;
+import com.qna.activities.NewsFeedActivity;
 import com.qna.activities.RepliesActivity;
+import com.qna.activities.SplashScreenActivity;
 import com.qna.database.QuestionFirebaseItems;
 import com.squareup.picasso.Picasso;
 
@@ -35,36 +38,51 @@ import java.util.List;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 
-p                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        ublic class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.ViewHolder> {
+public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.ViewHolder> {
 
-
+    /**
+     *  This is where the Firebase items were declared such as the Firebase User
+     *  Firebase Auth and all the references
+     */
     private FirebaseUser currentUser;
     private FirebaseAuth mFirebaseAuth;
     FirebaseDatabase firebaseDatabase;
     DatabaseReference usersDetailsReference, questionReference;
     String userID;
-    //ImageView flagImage;
 
-
+    // Here is the declaration for the activity to get the context
+    // (Kindly refer stack overflow to understand context)
     Activity activity;
+
+    // Here is the declaration for the question list
     List<QuestionFirebaseItems> questionFirebaseItemsList;
+
+    // This is the View that is holding each questions
+    // (for example the cardView holding a particular question)
     View view;
-    Boolean flaggedValue;
 
 
-
+    /**
+     * This is the QuestionAdapter Constructor
+     */
     public QuestionAdapter(Activity activity, List<QuestionFirebaseItems> questionFirebaseItems) {
+
+        /**
+         *  Inside this contructor, all other initializations were made
+         *  such as the list, context and the firebase items (firebase references)
+         */
 
         this.questionFirebaseItemsList = questionFirebaseItems;
         this.activity = activity;
 
-        firebaseDatabase  = FirebaseDatabase.getInstance();
+
+        firebaseDatabase = FirebaseDatabase.getInstance();
         usersDetailsReference = firebaseDatabase.getReference().child("Users_Details");
         questionReference = firebaseDatabase.getReference().child("Questions");
         mFirebaseAuth = FirebaseAuth.getInstance();
         currentUser = mFirebaseAuth.getCurrentUser();
 
-        if (currentUser != null){
+        if (currentUser != null) {
 
             userID = currentUser.getUid();
         }
@@ -76,9 +94,13 @@ p                                                                               
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
+        /**
+         *  Here's the ViewHolder where we set the item to be displayed in the recyeclerVIew
+         *  which in this case is the  "item_questions.xml"
+         */
+
         view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_questions, parent, false);
-        ViewHolder viewHolder;
-        viewHolder = new ViewHolder(view);
+        ViewHolder viewHolder = new ViewHolder(view);
 
 
         return viewHolder;
@@ -87,87 +109,91 @@ p                                                                               
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder viewHolder, int position) {
+
+        /**
+         *  Here's the onBideViewHolder, here is where we are performing our logics for each questions
+         *  Logics such as fetching each details like the question title, setting onClick listeners and so on
+         */
+
+        // Get the question position and then assign it to a variable called "questionFirebaseItems"
+        // So we are going to be using the variable called "questionFirebaseItems" to reference each and
+        // every question
 
         final QuestionFirebaseItems questionFirebaseItems
                 = questionFirebaseItemsList.get(position);
 
+        questionFirebaseItems.getQuestionId();
         // Assign values to the properties here
-        holder.questionTextView.setText(questionFirebaseItems.getTitle());
-        holder.dateTextView.setText(questionFirebaseItems.getDate());
-        holder.userNameTextView.setText(questionFirebaseItems.getFullName());
-        holder.categoryTextView.setText(questionFirebaseItems.getCategory());
+        viewHolder.questionTextView.setText(questionFirebaseItems.getTitle());
+        viewHolder.dateTextView.setText(questionFirebaseItems.getDate());
+        viewHolder.userNameTextView.setText(questionFirebaseItems.getFullName());
+        viewHolder.categoryTextView.setText(questionFirebaseItems.getCategory());
+        //viewHolder.country_icon.setBackgroundResource(questionFirebaseItems.getCountryIcon());
 
-        if (questionFirebaseItems != null){
-            holder.viewTextView.setText("" + questionFirebaseItems.getViewsCount());
+        // checks if the questionFirebaseItems is not null
+        if (questionFirebaseItems != null) {
+            // fetch and set the value of view counts to
+            viewHolder.viewTextView.setText("" + questionFirebaseItems.getViewsCount());
         } else {
 
-            holder.viewTextView.setText("0");
+            // if it is null, set the value to Zero
+            viewHolder.viewTextView.setText("0");
         }
 
+        // Method invocation to perform logic for the Flag imageView
+        performLogicFOrFlagImageClick(viewHolder, questionFirebaseItems, questionReference);
+
+        // Method invocation to perform logic for flaggedQuestions
+        logicForFlaggedQuestions(viewHolder, questionFirebaseItems);
 
 
+        // Checks to see if the value of authorId is not null (if it exits in firebase)
+        if (questionFirebaseItems.getAuthorId() != null) {
 
-        performLogicFOrFlagImageClick(holder, questionFirebaseItems, questionReference);
-        logicForFlaggedQuestions(holder, questionFirebaseItems, questionReference);
+            /**
+             *  Performs logic for fetching the Author details
+             */
 
+            usersDetailsReference.child(questionFirebaseItems.getAuthorId())
+                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-        questionReference.child(questionFirebaseItems.getQuestionId())
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            String authorAvatar = dataSnapshot.child("avatar").getValue(String.class);
+                            String authorCountry = dataSnapshot.child("country").getValue(String.class);
 
-                        Boolean flagged = dataSnapshot.child("flagged").getValue(Boolean.class);
+                            assert authorCountry != null;
 
-                        if (flagged != null){
-                            if (flagged){
+                            viewHolder.countryTV.setText(authorCountry);
 
+                            if (authorAvatar != null) {
 
-                                holder.flagImage.setBackgroundResource(R.drawable.icon_red_flag);
-                            } else
-                            {
-                                holder.flagImage.setBackgroundResource(R.drawable.flag_icon);
+                                Picasso.get()
+                                        .load(authorAvatar)
+                                        .into(viewHolder.userAvatarImageView);
                             }
-                        } else {
-
-                            holder.flagImage.setBackgroundResource(R.drawable.flag_icon);
                         }
-                    }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                    }
-                });
-
-        usersDetailsReference.child(questionFirebaseItems.getAuthorId())
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                        String authorAvatar = dataSnapshot.child("avatar").getValue(String.class);
-                        String authorCountry = dataSnapshot.child("country").getValue(String.class);
-
-                        assert  authorCountry != null;
-
-                        holder.countryTV.setText(authorCountry);
-
-                        if (authorAvatar != null){
-
-                            Picasso.get()
-                                    .load(authorAvatar)
-                                    .into(holder.userAvatarImageView);
                         }
-                    }
+                    });
+        }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
-        holder.shareImage.setOnClickListener(new View.OnClickListener() {
+        /**
+         *  Listen to click when the share imageView is clicked
+         *  Meaning that onClick listener is added to the Share ImageView here
+         */
+        viewHolder.shareImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                /**
+                 *  Logic for explicit intent to share questions externally
+                 */
+
                 String textToShare = questionFirebaseItems.getTitle();
                 Intent intent = new Intent(android.content.Intent.ACTION_SEND);
 
@@ -179,69 +205,133 @@ p                                                                               
             }
         });
 
-        holder.answerButton.setOnClickListener(new View.OnClickListener() {
+        /**
+         *  Add onClick listener to answer button
+         */
+        viewHolder.answerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
+                // invoke method to perform the logic for answer button (going to the replies Activity)
                 goToRepliesActivity(questionFirebaseItems);
             }
         });
 
+        /**
+         *  Add onClick listener to the entire question body
+         */
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
+                // invoke method to perform the logic for answer button (going to the replies Activity)
                 goToRepliesActivity(questionFirebaseItems);
             }
         });
 
     }  // End of onBindViewHolder
 
-    private void logicForFlaggedQuestions(final ViewHolder holder, final QuestionFirebaseItems questionFirebaseItems, final DatabaseReference questionReference) {
+    /**
+     *  This is the method that performs logic for the FlaggedQuestions immediately when the app starts
+     */
+    private void logicForFlaggedQuestions(final ViewHolder viewHolder,
+                                          final QuestionFirebaseItems questionFirebaseItems) {
 
-       // if (questionFirebaseItems.flagged() != null){
+        // Checks to see if the question is flagged
+        if (questionFirebaseItems.isFlagged()) {
+            // set the flag to red
+            viewHolder.flagImage.setBackgroundResource(R.drawable.icon_red_flag);
+        } else {
 
-            if (questionFirebaseItems.isFlagged()){
-
-                holder.flagImage.setBackgroundResource(R.drawable.icon_red_flag);
-            } else {
-
-                holder.flagImage.setBackgroundResource(R.drawable.flag_icon);
-            }
+            // if it is not flagged (i.e false), then set the flag to the normal one
+            viewHolder.flagImage.setBackgroundResource(R.drawable.flag_icon);
+        }
 
     }
 
-    private void performLogicFOrFlagImageClick(final ViewHolder holder, final QuestionFirebaseItems questionFirebaseItems, final DatabaseReference questionReference) {
+    /**
+     *
+     * This is the method that handles the click for
+     * the Flag Image View.
+     */
+    private void performLogicFOrFlagImageClick(final ViewHolder viewHolder,
+                                               final QuestionFirebaseItems questionFirebaseItems,
+                                               final DatabaseReference questionReference) {
 
-        holder.flagImage.setOnClickListener(new View.OnClickListener() {
+        viewHolder.flagImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
+                /**
+                 *  The Flag ImageView has been clicked
+                 */
+
+                // We use the question id from the Question Reference to get the current question that was clicked
+                // and then finally add a LISTENER FOR SINGLE VALUE EVENT
                 questionReference.child(questionFirebaseItems.getQuestionId())
-                        .addValueEventListener(new ValueEventListener() {
+                        .addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                                Boolean flagged = dataSnapshot.child("flagged").getValue(Boolean.class);
+                                /**
+                                 *  The onDataChange method is called whenever the value for the flagged is changed in
+                                 *  the database
+                                 */
 
-                                if (flagged != null){
+
+                                // Fetching the flagged value from firebase so we can know if
+                                // the value is true or false (It is returning a boolean value)
+                                final Boolean flagged = dataSnapshot.child("flagged").getValue(Boolean.class);
+
+                                // Check to see if the flagged field is empty or not in the firebase
+                                // hence checking if it is not equal to null
+                                if (flagged != null) {
+
+                                    /**
+                                     *  This will return true if it is not equal to null, which means it exit
+                                     *  and it is ready to update the value of flagged
+                                     */
+
+                                    // Use the question reference together with the questionId to update
+                                    // the value of the flagged. The simple logic used here is to first check
+                                    // if the value of flagged is true of false, if it is true, it will update
+                                    // it to false, and if the value is false it will update is to true
+                                    questionReference
+                                            .child(questionFirebaseItems.getQuestionId())
+                                            .child("flagged").setValue(flagged ? false : true)
+                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                @Override
+                                                public void onSuccess(Void aVoid) {
+
+                                                    /**
+                                                     *  This is the onSuccess listener which is called only when the
+                                                     *  value of flagged is updated to either true or false
+                                                     */
+
+                                                    if (!flagged) {
+
+                                                        // If the initial value of flagged was false when we clicked
+                                                        // the flag button, then it means we are trying to update
+                                                        // the value of flagged to true, hence it will show a toast
+                                                        // messages saying that it is successfully Flagged and then
+                                                        // change the icon to red flag
+                                                        viewHolder.flagImage.setBackgroundResource(R.drawable.icon_red_flag);
+                                                        Toast.makeText(activity, "Successfully Flagged", Toast.LENGTH_SHORT).show();
+                                                    } else {
+
+                                                        // If the initial value of flagged was true when we clicked
+                                                        // the flag button, then it means we are trying to update
+                                                        // the value of flagged to false, hence it will show a toast
+                                                        // messages saying that it is "Unflagged" and then
+                                                        // change the icon to normal flag
+                                                        viewHolder.flagImage.setBackgroundResource(R.drawable.icon_flag);
+                                                        Toast.makeText(activity, "Unflagged", Toast.LENGTH_SHORT).show();
+                                                    }
 
 
-                                    questionReference.child(questionFirebaseItems.getQuestionId())
-                                            .child("flagged").setValue(flagged ? false : true).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                        @Override
-                                        public void onSuccess(Void aVoid) {
+                                                }
+                                            });
 
-                                            if (questionFirebaseItems.isFlagged() == true){
-                                                Toast.makeText(activity, "Successfully Flagged", Toast.LENGTH_SHORT).show();
-                                                holder.flagImage.setBackgroundResource(R.drawable.icon_red_flag);
-                                            } else if (questionFirebaseItems.isFlagged() == false){
-
-                                                Toast.makeText(activity, "Unflagged", Toast.LENGTH_SHORT).show();
-                                                holder.flagImage.setBackgroundResource(R.drawable.flag_icon);
-                                            }
-                                        }
-                                    });
 
                                 }
                             }
@@ -252,17 +342,18 @@ p                                                                               
                             }
                         });
 
-
-
-
-
-
-
             }
         });
     }
 
+    /**
+     *  Metbod to take the users to the replies activity
+     */
     private void goToRepliesActivity(QuestionFirebaseItems questionFirebaseItems) {
+
+        /**
+         *  Implicit intent to take the users to the replies activity
+         */
 
         Intent intent = new Intent(activity, RepliesActivity.class);
         intent.putExtra("qID", questionFirebaseItems.getQuestionId());
@@ -274,19 +365,24 @@ p                                                                               
     @Override
     public int getItemCount() {
 
+        /**
+         *  The getItemCount gets the total number of questions in the database (and the adapter)
+         */
+
         return questionFirebaseItemsList.size();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
 
 
-        // Declare properties for question items
-        public TextView userNameTextView,questionTextView,dateTextView, categoryTextView,
-                countryTV,viewTextView;
-        public ImageView flagImage,shareImage;
+        /**
+         * Declare properties for question items
+         */
+        public TextView userNameTextView, questionTextView, dateTextView, categoryTextView,
+                countryTV, viewTextView;
+        public ImageView flagImage, shareImage, country_icon;
         public CircleImageView userAvatarImageView;
         public Button answerButton;
-
 
 
         public ViewHolder(View itemView) {
@@ -294,7 +390,9 @@ p                                                                               
             super(itemView);
 
 
-            // Initialize all properties
+            /**
+             *  Initialize all properties
+             */
 
             userNameTextView = itemView.findViewById(R.id.userNameTextView);
             viewTextView = itemView.findViewById(R.id.viewTextView);
@@ -306,8 +404,12 @@ p                                                                               
             categoryTextView = itemView.findViewById(R.id.categoryTextView);
             countryTV = itemView.findViewById(R.id.countryTV);
             answerButton = itemView.findViewById(R.id.answerButton);
+            country_icon = itemView.findViewById(R.id.country_icon);
 
 
         }
+
+
     }
+
 }
