@@ -59,7 +59,7 @@ public class RepliesActivity extends AppCompatActivity {
     RecyclerView.Adapter repliesAdapter;
 
     Intent getInfoFromMainActivity;
-    String qID, title;
+   public static String qID, title;
     TextView questionTextView, viewsTV;
     ImageView shareImage;
     CircleImageView currentUserAvatarImageView;
@@ -149,9 +149,7 @@ public class RepliesActivity extends AppCompatActivity {
                           currentUser.getDisplayName(),
                           "",
                           currentDate + " at " + currentTime,
-                          replyEditText.getText().toString(),
-                          0,
-                          0
+                          replyEditText.getText().toString()
                   );
 
                   questionReference.child(qID).child("replies")

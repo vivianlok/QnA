@@ -30,7 +30,9 @@ import com.qna.R;
 import com.qna.activities.NewsFeedActivity;
 import com.qna.activities.RepliesActivity;
 import com.qna.activities.SplashScreenActivity;
+import com.qna.database.LikesAndDislikeFirebaseItem;
 import com.qna.database.QuestionFirebaseItems;
+import com.qna.database.RepliesFirebaseItem;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -230,7 +232,51 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.ViewHo
         });
 
     }  // End of onBindViewHolder
+    private void performLogicFOrDIslike(final RepliesFirebaseItem repliesFirebaseItem, RepliesAdapter.ViewHolder viewHolder) {
 
+        questionReference
+                .child(RepliesActivity.qID)
+                .child("disLikes")
+                //userId from the database
+                .orderByChild("userID")
+                //current userID
+                .equalTo(userID)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                        if (!dataSnapshot.exists()){
+
+                            LikesAndDislikeFirebaseItem likesAndDislikeFirebaseItem
+                                    = new LikesAndDislikeFirebaseItem(userID);
+                            questionReference
+                                    .child(RepliesActivity.qID)
+                                    .child("replies")
+                                    .child(repliesFirebaseItem.getReplyId())
+                                    .child("disLikes")
+                                    .push()
+                                    .setValue(likesAndDislikeFirebaseItem)
+                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void aVoid) {
+
+                                            Toast.makeText(activity, "Disliked Reply", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                        } else  {
+
+                            // If user exist
+
+                            Toast.makeText(activity, "You already disliked this question", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+    }
     /**
      *  This is the method that performs logic for the FlaggedQuestions immediately when the app starts
      */
@@ -379,8 +425,8 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.ViewHo
          * Declare properties for question items
          */
         public TextView userNameTextView, questionTextView, dateTextView, categoryTextView,
-                countryTV, viewTextView;
-        public ImageView flagImage, shareImage, country_icon;
+                countryTV, viewTextView,likeCountTV,unlikeCountTV;
+        public ImageView flagImage, shareImage, country_icon,likeImage,unlikeImage;
         public CircleImageView userAvatarImageView;
         public Button answerButton;
 
@@ -405,6 +451,8 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.ViewHo
             countryTV = itemView.findViewById(R.id.countryTV);
             answerButton = itemView.findViewById(R.id.answerButton);
             country_icon = itemView.findViewById(R.id.country_icon);
+            likeCountTV = itemView.findViewById(R.id.likeCountTV);
+            unlikeCountTV = itemView.findViewById(R.id.unlikeCountTV);
 
 
         }
