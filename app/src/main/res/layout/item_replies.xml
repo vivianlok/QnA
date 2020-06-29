@@ -44,6 +44,7 @@
                     android:layout_marginLeft="7dp"
                     android:id="@+id/replyUserNameTextView" />
                 <TextView
+                    android:id="@+id/dateTV"
                     android:layout_marginTop="15dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -53,6 +54,7 @@
                     android:layout_toRightOf="@id/replyUserAvatarImageView"
                     android:layout_marginLeft="200dp" />
                 <TextView
+                    android:id="@+id/replyTV"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="10dp"
@@ -74,20 +76,24 @@
     android:layout_alignParentLeft="true"
     >
     <ImageView
+        android:id="@+id/likeImage"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:src="@drawable/icon_thumbs_up"/>
     <TextView
+        android:id="@+id/likeCountTV"
         android:layout_marginLeft="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="0"/>
     <ImageView
+        android:id="@+id/unlikeImage"
         android:layout_marginLeft="20dp"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:src="@drawable/icon_thumbs_down"/>
     <TextView
+        android:id="@+id/unlikeCountTV"
         android:layout_marginLeft="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

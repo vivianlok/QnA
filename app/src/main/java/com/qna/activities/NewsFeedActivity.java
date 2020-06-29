@@ -36,7 +36,7 @@ public class NewsFeedActivity extends AppCompatActivity {
 
     String userId;
     // create and declare question replies ArrayList
-    List<QuestionFirebaseItems> QuestionFirebaseItemsList = new ArrayList<>();
+    List<QuestionFirebaseItems> questionFirebaseItemsList = new ArrayList<>();
 
     ImageView categoriesImageView;
 
@@ -94,11 +94,11 @@ public class NewsFeedActivity extends AppCompatActivity {
                             QuestionFirebaseItems QuestionFirebaseItems
                                     = dataSnapshot.getValue(QuestionFirebaseItems.class);
 
-                            QuestionFirebaseItemsList.add(QuestionFirebaseItems);
+                            questionFirebaseItemsList.add(QuestionFirebaseItems);
 
                             // set adapter
                             questionAdapter = new QuestionAdapter(NewsFeedActivity.this,
-                                    QuestionFirebaseItemsList);
+                                    questionFirebaseItemsList);
                             QuestionRecyclerView.setAdapter(questionAdapter);
                             questionAdapter.notifyDataSetChanged();
 
@@ -127,6 +127,5 @@ public class NewsFeedActivity extends AppCompatActivity {
                     }
                 });
     }
-
 
 }
