@@ -220,20 +220,35 @@ public class RepliesAdapter extends RecyclerView.Adapter<RepliesAdapter.ViewHold
                                     .child("replies")
                                     .child(repliesFirebaseItem.getReplyId())
                                     .child("disLikes")
-                                    .push()
+                                    .child(userID) //.push()
                                     .setValue(likesAndDislikeFirebaseItem)
                                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                                         @Override
                                         public void onSuccess(Void aVoid) {
 
-                                            Toast.makeText(activity, "Disliked Reply", Toast.LENGTH_SHORT).show();
+
+                                            //Toast.makeText(activity, "Disliked Reply", Toast.LENGTH_SHORT).show();
                                         }
                                     });
                         } else  {
 
                             // If user exist
+                            questionReference
+                                    .child(RepliesActivity.qID)
+                                    .child("replies")
+                                    .child(repliesFirebaseItem.getReplyId())
+                                    .child("disLikes")
+                                    .child(userID) //.push()
+                                    .removeValue()
+                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void aVoid) {
 
-                            Toast.makeText(activity, "You already disliked this question", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(activity, "Successfully removed", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+
+//                            Toast.makeText(activity, "You already disliked this question", Toast.LENGTH_SHORT).show();
                         }
                     }
 
@@ -268,7 +283,7 @@ public class RepliesAdapter extends RecyclerView.Adapter<RepliesAdapter.ViewHold
                                     .child("replies")
                                     .child(repliesFirebaseItem.getReplyId())
                                     .child("likes")
-                                    .push()
+                                    .child(userID) //.push()
                                     .setValue(likesAndDislikeFirebaseItem)
                                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                                         @Override
@@ -278,8 +293,22 @@ public class RepliesAdapter extends RecyclerView.Adapter<RepliesAdapter.ViewHold
                                         }
                                     });
                         } else  {
+                            // If user exist
+                            questionReference
+                                    .child(RepliesActivity.qID)
+                                    .child("replies")
+                                    .child(repliesFirebaseItem.getReplyId())
+                                    .child("disLikes")
+                                    .child(userID) //.push()
+                                    .removeValue()
+                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void aVoid) {
 
-                            Toast.makeText(activity, "You already liked this question", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(activity, "Successfully removed", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                            //Toast.makeText(activity, "You already liked this question", Toast.LENGTH_SHORT).show();
                         }
                     }
 
