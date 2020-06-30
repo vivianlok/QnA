@@ -39,6 +39,8 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
+import static com.qna.activities.RepliesActivity.qID;
+
 
 public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.ViewHolder> {
 
@@ -131,7 +133,52 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.ViewHo
         viewHolder.dateTextView.setText(questionFirebaseItems.getDate());
         viewHolder.userNameTextView.setText(questionFirebaseItems.getFullName());
         viewHolder.categoryTextView.setText(questionFirebaseItems.getCategory());
+
         //viewHolder.country_icon.setBackgroundResource(questionFirebaseItems.getCountryIcon());
+
+        questionReference
+                .child(questionFirebaseItems.getQuestionId())
+                .child("likes")
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                        long likesCount = dataSnapshot.getChildrenCount();
+                        if (dataSnapshot.exists()){
+                            viewHolder.likeCountTV.setText("" + likesCount);
+                        } else {
+
+                            viewHolder.likeCountTV.setText("0");
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
+        questionReference
+                .child(questionFirebaseItems.getQuestionId())
+                .child("disLikes")
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                        long disLikesCount = dataSnapshot.getChildrenCount();
+                        if (dataSnapshot.exists()){
+                            viewHolder.unlikeCountTV.setText("" + disLikesCount);
+                        } else {
+
+                            viewHolder.unlikeCountTV.setText("0");
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
 
         // checks if the questionFirebaseItems is not null
         if (questionFirebaseItems != null) {
@@ -231,11 +278,88 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.ViewHo
             }
         });
 
+        viewHolder.likeImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                performLogicForLikes(questionFirebaseItems, viewHolder);
+
+
+            }
+        }); //end of unlikeImage onclicklistener
+
+        viewHolder.unlikeImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                performLogicForDislike(questionFirebaseItems, viewHolder);
+
+
+            }
+        }); //end of unlikeImage onclicklistener
     }  // End of onBindViewHolder
-    private void performLogicFOrDIslike(final RepliesFirebaseItem repliesFirebaseItem, RepliesAdapter.ViewHolder viewHolder) {
+
+    private void performLogicForLikes(final QuestionFirebaseItems questionFirebaseItems, QuestionAdapter.ViewHolder viewHolder) {
 
         questionReference
-                .child(RepliesActivity.qID)
+                .child(questionFirebaseItems.getQuestionId())
+                .child("likes")
+                //userId from the database
+                .orderByChild("userID")
+                //current userID
+                .equalTo(userID)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                        if (!dataSnapshot.exists()){
+
+                            LikesAndDislikeFirebaseItem likesAndDislikeFirebaseItem
+                                    = new LikesAndDislikeFirebaseItem(
+                                    userID
+                            );
+                            questionReference
+                                    .child(questionFirebaseItems.getQuestionId())
+                                    .child("likes")
+                                    .child(userID)
+                                    .setValue(likesAndDislikeFirebaseItem)
+                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void aVoid) {
+
+                                            Toast.makeText(activity, "Liked Question", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                        } else  {
+
+                            questionReference
+                                    .child(questionFirebaseItems.getQuestionId())
+                                    .child("likes")
+                                    .child(userID)
+                                    .removeValue()
+                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+
+                                    Toast.makeText(activity, "Successfully removed", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+
+                           // Toast.makeText(activity, "You already liked this question", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+    }
+
+    private void performLogicForDislike(final QuestionFirebaseItems questionFirebaseItems, QuestionAdapter.ViewHolder viewHolder) {
+
+        questionReference
+                .child(questionFirebaseItems.getQuestionId())
                 .child("disLikes")
                 //userId from the database
                 .orderByChild("userID")
@@ -250,24 +374,36 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.ViewHo
                             LikesAndDislikeFirebaseItem likesAndDislikeFirebaseItem
                                     = new LikesAndDislikeFirebaseItem(userID);
                             questionReference
-                                    .child(RepliesActivity.qID)
-                                    .child("replies")
-                                    .child(repliesFirebaseItem.getReplyId())
+                                    .child(questionFirebaseItems.getQuestionId())
                                     .child("disLikes")
-                                    .push()
+                                    .child(userID) //push
                                     .setValue(likesAndDislikeFirebaseItem)
                                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                                         @Override
                                         public void onSuccess(Void aVoid) {
 
-                                            Toast.makeText(activity, "Disliked Reply", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(activity, "Disliked Question", Toast.LENGTH_SHORT).show();
                                         }
                                     });
                         } else  {
 
                             // If user exist
 
-                            Toast.makeText(activity, "You already disliked this question", Toast.LENGTH_SHORT).show();
+                            questionReference
+                                    .child(questionFirebaseItems.getQuestionId())
+                                    .child("disLikes")
+                                    .child(userID) //push
+                                    .removeValue()
+                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+
+                                    Toast.makeText(activity, "Successfully removed", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+
+
+                            //  Toast.makeText(activity, "You already disliked this question", Toast.LENGTH_SHORT).show();
                         }
                     }
 
@@ -343,7 +479,8 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.ViewHo
                                     // if the value of flagged is true of false, if it is true, it will update
                                     // it to false, and if the value is false it will update is to true
                                     questionReference
-                                            .child(questionFirebaseItems.getQuestionId())
+                                            //qID questionFirebaseItems.getQuestionId()
+                                            .child(qID)
                                             .child("flagged").setValue(flagged ? false : true)
                                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                                 @Override
@@ -453,6 +590,8 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.ViewHo
             country_icon = itemView.findViewById(R.id.country_icon);
             likeCountTV = itemView.findViewById(R.id.likeCountTV);
             unlikeCountTV = itemView.findViewById(R.id.unlikeCountTV);
+            likeImage = itemView.findViewById(R.id.likeImage);
+            unlikeImage = itemView.findViewById(R.id.unlikeImage);
 
 
         }
