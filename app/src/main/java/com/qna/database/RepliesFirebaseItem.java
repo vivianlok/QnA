@@ -2,18 +2,20 @@ package com.qna.database;
 
 public class RepliesFirebaseItem {
 
-    String replyId, userName, avatar, date, replyMessage;
+    String replyId, userName, avatar, date, repliedMessage, originalReplyText;
 
     public RepliesFirebaseItem(){}
+    //replyingText- original comment - pizza hut   --- originalReplyText
+    //replyMessage -  replied to comment - noted   --- repliedMessage
 
 
-    public RepliesFirebaseItem(String replyId, String userName, String avatar, String date,
-                               String replyMessage) {
+    public RepliesFirebaseItem(String replyId, String userName, String avatar, String date, String repliedMessage, String originalReplyText) {
         this.replyId = replyId;
         this.userName = userName;
         this.avatar = avatar;
         this.date = date;
-        this.replyMessage = replyMessage;
+        this.repliedMessage = repliedMessage;
+        this.originalReplyText = originalReplyText;
     }
 
     public String getReplyId() {
@@ -48,13 +50,19 @@ public class RepliesFirebaseItem {
         this.date = date;
     }
 
-    public String getReplyMessage() {
-        return replyMessage;
+    public String getRepliedMessage() {
+        return repliedMessage;
     }
 
-    public void setReplyMessage(String replyMessage) {
-        this.replyMessage = replyMessage;
+    public void setRepliedMessage(String repliedMessage) {
+        this.repliedMessage = repliedMessage;
     }
 
+    public String getOriginalReplyText() {
+        return originalReplyText;
+    }
 
+    public void setOriginalReplyText(String originalReplyText) {
+        this.originalReplyText = originalReplyText;
+    }
 }

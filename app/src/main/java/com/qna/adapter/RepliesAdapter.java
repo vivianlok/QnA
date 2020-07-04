@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -121,7 +122,7 @@ public class RepliesAdapter extends RecyclerView.Adapter<RepliesAdapter.ViewHold
         viewHolder.replyUserNameTextView.setText(repliesFirebaseItem.getUserName());
         viewHolder.dateTV.setText(repliesFirebaseItem.getDate());
         //viewHolder.replyUserAvatarImageView.setBackgroundResource(repliesFirebaseItem.getAvatar());
-        viewHolder.replyTV.setText(repliesFirebaseItem.getReplyMessage());
+        viewHolder.replyTV.setText(repliesFirebaseItem.getRepliedMessage());
 
 
         questionReference
@@ -191,6 +192,23 @@ public class RepliesAdapter extends RecyclerView.Adapter<RepliesAdapter.ViewHold
             }
         });
 
+
+        viewHolder.replyLinearLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                RepliesActivity.replyEditText.setText("@" + repliesFirebaseItem.getUserName());
+                RepliesActivity.replyingText = repliesFirebaseItem.getRepliedMessage();
+            }
+        });
+//if available
+        if (repliesFirebaseItem.getOriginalReplyText() != null){
+
+            // If there's a message been replied to
+
+            viewHolder.replyingTextView.setVisibility(View.VISIBLE);
+            viewHolder.replyingTextView.setText(repliesFirebaseItem.getOriginalReplyText());
+        }
 
 
 
@@ -336,8 +354,9 @@ public class RepliesAdapter extends RecyclerView.Adapter<RepliesAdapter.ViewHold
         /**
          * Declare properties for question items
          */
-        public TextView replyUserNameTextView,dateTV,replyTV,likeCountTV,unlikeCountTV;
+        public TextView replyUserNameTextView,dateTV,replyTV,likeCountTV,unlikeCountTV, replyingTextView;
         public ImageView replyUserAvatarImageView, likeImage, unlikeImage;
+        public LinearLayout replyLinearLayout;
 
 
         public ViewHolder(View itemView) {
@@ -357,6 +376,8 @@ public class RepliesAdapter extends RecyclerView.Adapter<RepliesAdapter.ViewHold
             unlikeCountTV = itemView.findViewById(R.id.unlikeCountTV);
             likeImage = itemView.findViewById(R.id.likeImage);
             unlikeImage = itemView.findViewById(R.id.unlikeImage);
+            replyLinearLayout = itemView.findViewById(R.id.replyLinearLayout);
+            replyingTextView = itemView.findViewById(R.id.replyingTextView);
 
         }
 

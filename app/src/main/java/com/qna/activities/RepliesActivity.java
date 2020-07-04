@@ -49,24 +49,23 @@ public class RepliesActivity extends AppCompatActivity {
     private FirebaseUser currentUser;
     private FirebaseAuth mFirebaseAuth;
     FirebaseDatabase firebaseDatabase;
-    DatabaseReference usersDetailsReference, questionReference,repliesDatabaseReference;
-    String userID, currentDate, currentTime;
+    DatabaseReference usersDetailsReference, questionReference, repliesDatabaseReference;
+    public static String userID, currentDate, currentTime, replyingText = null;
     //ImageView flagImage;
-    String userId;
     // create and declare question replies ArrayList
     List<RepliesFirebaseItem> repliesFirebaseItemList = new ArrayList<>();
     RecyclerView repliesRecyclerView;
     RecyclerView.Adapter repliesAdapter;
 
     Intent getInfoFromMainActivity;
-   public static String qID, title;
+    public static String qID, title;
     TextView questionTextView, viewsTV;
     ImageView shareImage;
     CircleImageView currentUserAvatarImageView;
     Button attachmentButton;
 
     TextView postTextView;
-    EditText replyEditText;
+    public static EditText replyEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,7 +102,7 @@ public class RepliesActivity extends AppCompatActivity {
         allOrdersLinearLayoutManager.setStackFromEnd(true);
 
         repliesRecyclerView.setLayoutManager(allOrdersLinearLayoutManager);
-
+//Get Intent from Main Activity
         getInfoFromMainActivity = getIntent(); // get intent
 
         if (getInfoFromMainActivity != null) {
@@ -115,7 +114,7 @@ public class RepliesActivity extends AppCompatActivity {
             setProfilePicture();
             attachDatabaseReadListener();
 
-        }
+        } //End of getting Intent from Main Activity
 
         shareImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -136,33 +135,34 @@ public class RepliesActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-              if (TextUtils.isEmpty(replyEditText.getText().toString())){
+                if (TextUtils.isEmpty(replyEditText.getText().toString())) {
 
-                  Toast.makeText(RepliesActivity.this, "Please enter a reply", Toast.LENGTH_SHORT).show();
-              } else {
+                    Toast.makeText(RepliesActivity.this, "Please enter a reply", Toast.LENGTH_SHORT).show();
+                } else {
 
-                  String replyId = questionReference.child(qID).child("replies").push().getKey();
+                    String replyId = questionReference.child(qID).child("replies").push().getKey();
 
-                  RepliesFirebaseItem repliesFirebaseItem
-                          = new RepliesFirebaseItem(
-                          replyId,
-                          currentUser.getDisplayName(),
-                          "",
-                          currentDate + " at " + currentTime,
-                          replyEditText.getText().toString()
-                  );
+                    RepliesFirebaseItem repliesFirebaseItem
+                            = new RepliesFirebaseItem(
+                            replyId,
+                            currentUser.getDisplayName(),
+                            "",
+                            currentDate + " at " + currentTime,
+                            replyEditText.getText().toString(),
+                            replyingText
+                    );
 
-                  questionReference.child(qID).child("replies")
-                          .child(replyId).setValue(repliesFirebaseItem).addOnSuccessListener(new OnSuccessListener<Void>() {
-                      @Override
-                      public void onSuccess(Void aVoid) {
+                    questionReference.child(qID).child("replies")
+                            .child(replyId).setValue(repliesFirebaseItem).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
 
-                          replyEditText.setText("");
-                      }
-                  });
-              }
+                            replyEditText.setText("");
+                        }
+                    });
+                }
             }
-        });
+        }); //End of postTextView onclickListener
 
     } // End of onCreate method
 
@@ -170,9 +170,8 @@ public class RepliesActivity extends AppCompatActivity {
     public void attachDatabaseReadListener() {
 
 
-
         questionReference
-              .child(qID)
+                .child(qID)
                 .child("replies")
                 .addChildEventListener(new ChildEventListener() {
                     @Override
