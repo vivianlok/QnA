@@ -70,7 +70,7 @@ public class ProfileActivity extends AppCompatActivity implements  View.OnClickL
     private void setUserDetails() {
 
         usersDetailsReference
-               .child(userID)
+                .child(userID)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

@@ -72,6 +72,8 @@ public class PostQuestionActivity extends AppCompatActivity implements AdapterVi
         questionReference = firebaseDatabase.getReference().child("Questions");
         mFirebaseAuth = FirebaseAuth.getInstance();
         currentUser = mFirebaseAuth.getCurrentUser();
+
+
          currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
          currentTime = new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(new Date());
 
