@@ -38,6 +38,7 @@ import java.util.Date;
 import java.util.Locale;
 
 public class PostQuestionActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+    //Part 1: Declare Firebase currentUser, FirebaseAuth, Firebase database references. Then declare Firebase app and storage
     private FirebaseUser currentUser;
     private FirebaseAuth mFirebaseAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
@@ -46,7 +47,7 @@ public class PostQuestionActivity extends AppCompatActivity implements AdapterVi
 
     private FirebaseApp app;
     private FirebaseStorage storage;
-
+    //Part 2: Declare Firebase spinner, edittext, button, textview and imageview
     private Spinner spinner;
     EditText questionTitleET,descriptionET;
     Button attachmentButton, askSubmitButton;
@@ -54,8 +55,11 @@ public class PostQuestionActivity extends AppCompatActivity implements AdapterVi
     ImageView currentUserAvatarImageView;
 
     String userID, currentDate, currentTime;
+
+    //Part 3: declare dataUri which is used in Picasso to retrieve image
     Uri dataUri = null;
 
+    //Part 2: Set variable for the Spinner for each category
     String selectedCategory = "Food"; //setting variable
     private static final String[] category
             = {"Food", "Entrepreneurship", "Education", "Fashion", "Fitness", "Book", "Art", "Pet", "Music", "Economics", "Business", "Travel", "Technology", "Sports", "Science"};
@@ -93,6 +97,7 @@ public class PostQuestionActivity extends AppCompatActivity implements AdapterVi
             setUserDetails();
         }
 
+        //Part 2: Spinner - setting up the spinner to to get categories from spinner
         spinner = (Spinner) findViewById(R.id.selectCategory);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(PostQuestionActivity.this,android.R.layout.simple_spinner_item, category);
 
@@ -106,7 +111,6 @@ public class PostQuestionActivity extends AppCompatActivity implements AdapterVi
                 selectAttachment();
             }
         });
-
         askSubmitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -258,7 +262,7 @@ public class PostQuestionActivity extends AppCompatActivity implements AdapterVi
            }
 
         }
-    }
+    } //End of performActionForAskQuestion method
 
     private void saveQuestionToDatabase(String questionId, String attachment) {
 

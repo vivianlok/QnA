@@ -54,6 +54,16 @@
             android:layout_marginTop="0dp"
             android:src="@drawable/country_icon"
             android:id="@+id/country_icon" />
+
+        <ImageView
+            android:id="@+id/solvedImage"
+            android:layout_width="27dp"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="50dp"
+            android:layout_marginRight="70dp"
+            android:layout_toLeftOf="@id/country_icon"
+             />
         <TextView
             android:id="@+id/countryTV"
             android:layout_width="wrap_content"

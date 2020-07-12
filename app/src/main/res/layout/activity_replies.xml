@@ -64,18 +64,28 @@
             android:layout_marginLeft="10dp"
             android:gravity="bottom"
             android:text="Music"/>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:id="@+id/solvedLinearLayout">
         <ImageView
+            android:id="@+id/solvedImage"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_marginLeft="10dp"
-            android:src="@drawable/icon_solved"/>
+           />
         <TextView
+            android:id="@+id/solvedTV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:layout_marginLeft="10dp"
             android:gravity="bottom"
-            android:text="Solved"/>
+            android:text=""/>
+
+        </LinearLayout>
+
         <ImageView
             android:layout_width="40dp"
             android:layout_height="40dp"

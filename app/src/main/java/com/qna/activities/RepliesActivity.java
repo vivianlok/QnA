@@ -2,10 +2,12 @@ package com.qna.activities;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -17,6 +19,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -63,7 +66,9 @@ public class RepliesActivity extends AppCompatActivity {
     ImageView shareImage;
     CircleImageView currentUserAvatarImageView;
     Button attachmentButton;
-
+    TextView solvedTV;
+    LinearLayout solvedLinearLayout;
+    ImageView solvedImage;
     TextView postTextView;
     public static EditText replyEditText;
 
@@ -94,7 +99,9 @@ public class RepliesActivity extends AppCompatActivity {
         attachmentButton = findViewById(R.id.attachmentButton);
         postTextView = findViewById(R.id.postTextView);
         replyEditText = findViewById(R.id.replyEditText);
-
+        solvedImage = findViewById(R.id.solvedImage);
+        solvedLinearLayout = findViewById(R.id.solvedLinearLayout);
+        solvedTV = findViewById(R.id.solvedTV);
         repliesRecyclerView = findViewById(R.id.repliesRecyclerView);
 
         LinearLayoutManager allOrdersLinearLayoutManager;
@@ -113,6 +120,7 @@ public class RepliesActivity extends AppCompatActivity {
             performLogicFOrViewsCount(qID);
             setProfilePicture();
             attachDatabaseReadListener();
+            checkIfQuestionIsSolved();
 
         } //End of getting Intent from Main Activity
 
@@ -164,7 +172,100 @@ public class RepliesActivity extends AppCompatActivity {
             }
         }); //End of postTextView onclickListener
 
+        solvedLinearLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                questionReference
+                        .child(qID)
+                        .addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                                String authorID = dataSnapshot.child("authorId").getValue(String.class);
+
+                                assert  authorID != null;
+
+                                if (userID.equalsIgnoreCase(authorID)){
+
+                                    displayDialogSolved();
+                                } else {
+
+                                    Toast.makeText(RepliesActivity.this, "You're not the author of this question", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                            }
+                        });
+
+            }
+        });
+
     } // End of onCreate method
+
+    private void checkIfQuestionIsSolved() {
+
+        questionReference.child(qID)
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                        Boolean solved = dataSnapshot.child("solved").getValue(Boolean.class);
+
+                        if (solved != null){
+
+                            if (solved){
+
+                                // returns true
+                                solvedImage.setBackgroundResource(R.drawable.icon_solved);
+                                solvedTV.setText("Solved");
+                            } else {
+
+                                // returns false
+                                solvedImage.setBackgroundResource(R.drawable.icon_x);
+                                solvedTV.setText("Not Solved");
+                            }
+                        } else {
+
+                            solvedImage.setBackgroundResource(R.drawable.icon_x);
+                            solvedTV.setText("Not Solved");
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+    }
+
+    public void displayDialogSolved() {
+        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which){
+                    case DialogInterface.BUTTON_POSITIVE:
+                        //Yes button clicked
+                        questionReference.child(qID)
+                                .child("solved")
+                                .setValue(true);
+                        break;
+
+                    case DialogInterface.BUTTON_NEGATIVE:
+                        //No button clicked
+                        dialog.dismiss();
+                        break;
+                }
+            }
+        };
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(RepliesActivity.this);
+        builder.setMessage("Are you sure this question is solved?").setPositiveButton("Yes", dialogClickListener)
+                .setNegativeButton("No", dialogClickListener).show();
+    }
 
 
     public void attachDatabaseReadListener() {
@@ -302,5 +403,7 @@ public class RepliesActivity extends AppCompatActivity {
 
 
     } //end of addToViewsCount
+
+
 
 }

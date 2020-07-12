@@ -136,6 +136,8 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.ViewHo
 
         //viewHolder.country_icon.setBackgroundResource(questionFirebaseItems.getCountryIcon());
 
+        checkIfQuestionIsSolved(viewHolder, questionFirebaseItems);
+
         questionReference
                 .child(questionFirebaseItems.getQuestionId())
                 .child("likes")
@@ -356,6 +358,41 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.ViewHo
                 });
     }
 
+    private void checkIfQuestionIsSolved(final ViewHolder viewHolder, QuestionFirebaseItems questionFirebaseItems) {
+
+        questionReference
+                .child(questionFirebaseItems.getQuestionId())
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                        Boolean solved = dataSnapshot.child("solved").getValue(Boolean.class);
+
+                        if (solved != null){
+
+                            if (solved){
+
+                                // returns true
+                                viewHolder.solvedImage.setBackgroundResource(R.drawable.icon_solved);
+                            } else {
+
+                                viewHolder.solvedImage.setBackgroundResource(R.drawable.icon_x);
+
+                            }
+                        } else {
+
+                            viewHolder.solvedImage.setBackgroundResource(R.drawable.icon_x);
+
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+    }
+
     private void performLogicForDislike(final QuestionFirebaseItems questionFirebaseItems, QuestionAdapter.ViewHolder viewHolder) {
 
         questionReference
@@ -563,7 +600,7 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.ViewHo
          */
         public TextView userNameTextView, questionTextView, dateTextView, categoryTextView,
                 countryTV, viewTextView,likeCountTV,unlikeCountTV;
-        public ImageView flagImage, shareImage, country_icon,likeImage,unlikeImage;
+        public ImageView flagImage, shareImage, country_icon,likeImage,unlikeImage, solvedImage;
         public CircleImageView userAvatarImageView;
         public Button answerButton;
 
@@ -592,6 +629,7 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.ViewHo
             unlikeCountTV = itemView.findViewById(R.id.unlikeCountTV);
             likeImage = itemView.findViewById(R.id.likeImage);
             unlikeImage = itemView.findViewById(R.id.unlikeImage);
+            solvedImage = itemView.findViewById(R.id.solvedImage);
 
 
         }
